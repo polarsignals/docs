@@ -9,8 +9,8 @@ const config = {
   title: "Polar Signals - Documentation",
   tagline: "Documentation for the Polar Signals cloud product.",
   url: "https://polarsignals.com/documentation",
-  baseUrl: "/docs/",
-  onBrokenLinks: "throw",
+  baseUrl: "/",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.png",
 
@@ -101,10 +101,6 @@ const config = {
           {
             title: "More",
             items: [
-              {
-                label: "Blog",
-                to: "/blog",
-              },
               {
                 label: "GitHub",
                 href: "https://github.com/facebook/docusaurus",
