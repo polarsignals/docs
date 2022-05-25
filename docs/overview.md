@@ -1,18 +1,6 @@
 # Overview
 
-Parca is a continuous profiling project. Continuous profiling is the act of taking profiles (such as CPU, Memory, I/O and more) of programs in a systematic way. Parca collects, stores and makes profiles available to be queried over time.
-
-## Features
-
-Parca's main features are:
-
-* a multi-dimensional data model with series of profiles identified by the profile type and key/value pairs
-* a label-selector based query language
-* query engine specifically designed for profiling data
-* optimized, built-in storage
-* support for pushing and pulling profiles from targets
-* targets are discovered via service discovery or static configuration
-* super low overhead profiler, powered by [eBPF](https://ebpf.io/)
+Polar Signals is a continuous profiling project for applications and infrastructure. It helps you save money, improve performance and understand incidents better.
 
 ## What is profiling?
 
@@ -32,27 +20,6 @@ Simply said, much like with any other observability data, you never know at whic
 
 There are more potential use cases, but the three that are most common are:
 
-* Saving money: Statistically significant insight into what code causes the most resources to be used, allows engineers to optimize those pieces and be confident, that resource usage will be lower after optimizing.
-* Understand difference: Always collecting data from all processes allows comparing why execution of code was different in time, across processes or even versions of code (Parca's powerful multi-dimensional model allows comparing profiling data on any label dimension).
-* Understand incidents: Collecting data in the past allows us to understand incidents even after they have happened and without manual capturing of profiling data.
-
-## Components
-
-The Parca project houses two main components:
-
-* Parca: The server that stores profiling data and allows it to be queried and analyzed over time.
-* Parca Agent: An eBPF based profiler, that can automatically discover targets to profile such as Kubernetes containers or systemd units.
-
-## Architecture
-
-This diagram illustrates the architecture of Parca and Parca Agent.
-
-![Parca Architecture Overview](https://docs.google.com/drawings/d/10VH49EgWlNF1wONKroQb5x3Q1Rkrnsc1BikTUvJNFIE/export/svg)
-
-Profiles can be sourced either by an agent, such as Parca Agent, pushing profiles to Parca, or the Parca server pulling profiles from targets via HTTP. [Go has popularized having HTTP endpoints to request profiles](https://pkg.go.dev/net/http/pprof) from. When pushed or pulled, the profiles are written to Parca's purpose-built storage (read more in-depth details in the [storage documentation](./storage)).
-
-Series of profiles in Parca are identified by their unique label combination. Parca has a rich set of [gRPC](https://grpc.io/) APIs, Parca's web UI uses [gRPC-web](https://grpc.io/docs/platforms/web/basics/) to communicate with the backend. Using the Parca UI a user can query profiles and visualize them using icicle-graphs (upside-down [flamegraphs](https://twitter.com/brendangregg/status/527214217007362049?lang=en)).
-
-## What does the name "Parca" mean?
-
-It plays on the [Program for Arctic Regional Climate Assessment (PARCA)](https://nsidc.org/data/parca) and the practice of ice core _**profiling**_ that has been done as part of it to study climate change. Hopefully with this open source project we can reduce some carbon emissions produced by unnecessary resource usage of data centers.
+- Saving money: Statistically significant insight into what code causes the most resources to be used, allows engineers to optimize those pieces and be confident, that resource usage will be lower after optimizing.
+- Understand difference: Always collecting data from all processes allows comparing why execution of code was different in time, across processes or even versions of code (Parca's powerful multi-dimensional model allows comparing profiling data on any label dimension).
+- Understand incidents: Collecting data in the past allows us to understand incidents even after they have happened and without manual capturing of profiling data.
