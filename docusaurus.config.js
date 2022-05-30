@@ -7,7 +7,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Polar Signals - Documentation",
-  tagline: "Documentation for the Polar Signals cloud product. Continuous profiling for every codebase",
+  tagline:
+    "Documentation for the Polar Signals cloud product. Continuous profiling for every codebase",
   url: "https://polarsignals.com",
   baseUrl: "/docs/",
   onBrokenLinks: "warn",
@@ -103,8 +104,16 @@ const config = {
             title: "More",
             items: [
               {
-                label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
+                label: "Blog",
+                href: "https://www.polarsignals.com/blog/",
+              },
+              {
+                label: "About Us",
+                href: "https://www.polarsignals.com/about-us/",
+              },
+              {
+                label: "Careers",
+                href: "https://www.polarsignals.com/working-at-polar-signals/",
               },
             ],
           },
