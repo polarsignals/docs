@@ -7,9 +7,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Polar Signals - Documentation",
-  tagline: "Documentation for the Polar Signals cloud product.",
-  url: "https://polarsignals.com/documentation",
-  baseUrl: "/",
+  tagline: "Documentation for the Polar Signals cloud product. Continuous profiling for every codebase",
+  url: "https://polarsignals.com",
+  baseUrl: "/docs/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.png",
@@ -33,6 +33,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          routeBasePath: "/",
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
