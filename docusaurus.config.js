@@ -9,8 +9,8 @@ const config = {
   title: "Polar Signals - Documentation",
   tagline:
     "Documentation for the Polar Signals cloud product. Continuous profiling for every codebase",
-  url: "https://polarsignals.com",
-  baseUrl: "/docs/",
+  url: "https://polarsignals.com/",
+  baseUrl: "/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.png",
