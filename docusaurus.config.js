@@ -65,7 +65,7 @@ const config = {
             label: "Documentation",
           },
           {
-            href: "https://github.com/facebook/docusaurus",
+            href: "https://github.com/polarsignals/docs",
             label: "GitHub",
             position: "right",
           },
