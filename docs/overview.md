@@ -1,6 +1,6 @@
 # Overview
 
-Polar Signals is a continuous profiling project for applications and infrastructure. It helps you save money, improve performance and understand incidents better.
+Polar Signals Cloud is a continuous profiling product for applications and infrastructure. It helps you save money, improve performance and understand incidents better.
 
 ## What is profiling?
 
@@ -8,7 +8,7 @@ Profiles describe a particular aspect of the execution of code. There are two ma
 
 Raw data for sampling profiles are stack-traces, as well as values attached to those stack-traces.
 
-Learn more about how profiling works in the [Profiling 101 documentation page](./profiling-101).
+Learn more about how profiling works in the [Profiling 101 documentation page](/docs/profiling-101).
 
 ## What is continuous profiling?
 
