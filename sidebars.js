@@ -26,6 +26,11 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "General",
+      items: ["organizations-and-projects"],
+    },
+    {
+      type: "category",
       label: "Tutorial",
       items: ["invite-users", "generating-tokens"],
     },
