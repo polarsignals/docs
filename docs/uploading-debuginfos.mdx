@@ -1,0 +1,49 @@
+# Uploading Debuginfos
+
+In order to resolve memory addresses to human readable function names for compiled languages such as Go, Rust, C, C++, or Haskell, you must provide these mappings (referred to as debuginfos) to Polar Signals Cloud.
+
+Ideally debuginfos are available in the production binaries, as then the agent installed on a node and recording the profiling data can extract them and everything works automatically.
+
+For various reasons this may be impractical, for example because debuginfos can dramatically increase the binary size.
+
+## Solution
+
+The solution to this problem is to upload debuginfos out of band, using the `parca-debuginfo` CLI. This is typically done in a CI/CD pipeline.
+
+### Install the CLI
+
+Download it:
+
+```
+curl -sLO https://github.com/parca-dev/parca-debuginfo/releases/download/v0.4.0/parca-debuginfo_0.4.0_`uname -s`_`uname -m`.tar.gz
+```
+
+Verify the checksum:
+
+```
+curl -sL https://github.com/parca-dev/parca-debuginfo/releases/download/v0.4.0/checksums.txt | shasum --ignore-missing -a 256 --check
+```
+
+And unpack it:
+
+```
+tar -xzf parca-debuginfo_0.4.0_`uname -s`_`uname -m`.tar.gz parca-debuginfo
+```
+
+If you want to move the CLI to a path in your `$PATH` you can move the binary (adjust to your preferred location):
+
+```
+mv parca-debuginfo /usr/local/bin/parca-debuginfo
+```
+
+### Obtain a token
+
+Next you'll need to obtain an authentication token to upload the debuginfos to your Polar Signals Cloud project. See the [Generating Tokens page](generating-tokens) to learn how.
+
+### Upload
+
+Finally you can use the authentication token to issue the upload command:
+
+```
+parca-debuginfo upload --store-address=grpc.polarsignals.com:443 --bearer-token=<the-token-you-obtained> /path/to/your/binary
+```

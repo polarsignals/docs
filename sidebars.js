@@ -32,7 +32,7 @@ const sidebars = {
     {
       type: "category",
       label: "Tutorial",
-      items: ["invite-users", "generating-tokens"],
+      items: ["invite-users", "generating-tokens", "uploading-debuginfos"],
     },
   ],
 };
