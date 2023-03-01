@@ -25,9 +25,14 @@ const sidebars = {
       id: "overview",
     },
     {
+      type: "doc",
+      label: "Why Polar Signals?",
+      id: "why-polar-signals",
+    },
+    {
       type: "category",
-      label: "General",
-      items: ["organizations-and-projects"],
+      label: "Concepts",
+      items: ["what-is-continuous-profiling", "profiling-101", "organizations-and-projects"],
     },
     {
       type: "category",

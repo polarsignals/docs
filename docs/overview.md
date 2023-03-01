@@ -1,25 +1,24 @@
 # Overview
 
-Polar Signals Cloud is a continuous profiling product for applications and infrastructure. It helps you save money, improve performance and understand incidents better.
+Polar Signals Cloud is a hosted service to store and analyze continuous profiling data. Thanks to our zero-instrumentation technology all you do is deploy our agent on your node and send the data to Polar Signals Cloud and you're ready to go!
 
-## What is profiling?
+## What are you looking for?
 
-Profiles describe a particular aspect of the execution of code. There are two main types of profiles: tracing and sampling. Polar Signals focuses on sampling profiling, because it can be done with very little overhead, and therefore can always be on in production environments. Probably the most common type of profiling is CPU profiling, the amount of time the CPU spends executing particular piece of code. Profilers can vary in their resolution and whether they just record the function name or also the line numbers. Profiling types, other than CPU profiling, can include memory allocations, or breaking down how much memory is currently being held by a program, typically referred to as heap profiling. It may also be useful to have runtime specific profiling, such as in Go, there is goroutine profiling.
+### I'm new here
 
-Raw data for sampling profiles are stack-traces, as well as values attached to those stack-traces.
+If you're here to understand what the Polar Signals Cloud product is, we recommend reading:
 
-Learn more about how profiling works in the [Profiling 101 documentation page](/docs/profiling-101).
+1. [What is Continuous Profiling?](what-is-continuous-profiling)
+2. [Why Polar Signals Cloud](why-polar-signals)
 
-## What is continuous profiling?
+### I already use Polar Signals Cloud
 
-As mentioned to above, sampling profiling can be achieved with very low overhead, therefore it can always be on in production. However, because of the nature of sampling profiling, it is possible that some parts of an execution are missed, therefore continuous profiling attempts to gather data continuously, so that with enough data it is statistically significant.
+User Management:
 
-Simply said, much like with any other observability data, you never know at which point in time you are going to need profiling data, so always collect it at low overhead.
+1. [Organizations and Projects](organizations-and-projects)
+2. [Inviting Users to an Org](invite-users)
 
-## When is continuous profiling useful?
+Miscellaneous:
 
-There are more potential use cases, but the three that are most common are:
-
-- Saving money: Statistically significant insight into what code causes the most resources to be used, allows engineers to optimize those pieces and be confident, that resource usage will be lower after optimizing.
-- Understand difference: Always collecting data from all processes allows comparing why execution of code was different in time, across processes or even versions of code (Polar Signals's powerful multi-dimensional model allows comparing profiling data on any label dimension).
-- Understand incidents: Collecting data in the past allows us to understand incidents even after they have happened and without manual capturing of profiling data.
+1. [Generating Tokens](generating-tokens)
+2. [Uploading Debuginfos](uploading-debuginfos)
