@@ -55,7 +55,8 @@ const config = {
         title: "",
         logo: {
           alt: "Polar Signals Logo",
-          src: "img/logo.png",
+          src: "img/logo.svg",
+          srcDark: "img/logo-dark.svg",
         },
         items: [
           {
