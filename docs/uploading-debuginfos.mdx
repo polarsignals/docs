@@ -15,19 +15,19 @@ The solution to this problem is to upload debuginfos out of band, using the `par
 Download it:
 
 ```
-curl -sLO https://github.com/parca-dev/parca-debuginfo/releases/download/v0.4.0/parca-debuginfo_0.4.0_`uname -s`_`uname -m`.tar.gz
+curl -sLO https://github.com/parca-dev/parca-debuginfo/releases/download/v0.5.0/parca-debuginfo_0.5.0_`uname -s`_`uname -m`.tar.gz
 ```
 
 Verify the checksum:
 
 ```
-curl -sL https://github.com/parca-dev/parca-debuginfo/releases/download/v0.4.0/checksums.txt | shasum --ignore-missing -a 256 --check
+curl -sL https://github.com/parca-dev/parca-debuginfo/releases/download/v0.5.0/checksums.txt | shasum --ignore-missing -a 256 --check
 ```
 
 And unpack it:
 
 ```
-tar -xzf parca-debuginfo_0.4.0_`uname -s`_`uname -m`.tar.gz parca-debuginfo
+tar -xzf parca-debuginfo_0.5.0_`uname -s`_`uname -m`.tar.gz parca-debuginfo
 ```
 
 If you want to move the CLI to a path in your `$PATH` you can move the binary (adjust to your preferred location):
