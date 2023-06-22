@@ -13,6 +13,11 @@ If you're here to understand what the Polar Signals Cloud product is, we recomme
 
 ### I already use Polar Signals Cloud
 
+Setup Collection:
+
+1. [Setup collection with Kubernetes](setup-collection-kubernetes)
+2. [Setup collection via CLI](setup-collection-cli)
+
 User Management:
 
 1. [Organizations and Projects](organizations-and-projects)

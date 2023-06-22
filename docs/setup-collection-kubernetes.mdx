@@ -1,0 +1,37 @@
+# Setup collection using Kubernetes
+
+## Grab an API token
+
+To be able to send any data to Polar Signals, we're going to need an API token for the
+collection mechanism to authenticate with the Polar Signals API.
+
+If you haven't already, create an API token, by giving it a name and hit "create". The
+token will only be displayed this one time copy the token to a safe place. It will
+also be used this one time in the parts of the guide that follows.
+
+## Agent Mode
+
+### Instructions
+
+The Polar Signals collector is based on the Parca project. Once deployed into your Kubernetes cluster, it discovers the containers and starts continously profiling them or can be configured to scrape pprof profiles from specific http endpoints.
+
+1. The below Kubernetes manifests, will deploy the open-source Parca agent to discover all containers in all Pods in all namespaces and send profiles to the Polar Signals cloud. It uses the Prometheus service discovery, so it can be customized to suit exactly your setup, but this should get you started sending your first profiles continuously to Polar Signals.
+
+2. Create everything by running the following command:
+
+You are now continuously profiling and sending the data to Polar Signals!
+
+3. Now you can head over to the Profile Explorer and browse your profiles.
+
+## Scraper Mode
+
+### Instructions
+
+The Polar Signals collector is based on the Parca project. Once deployed into your Kubernetes cluster, it discovers the containers and starts continously profiling them or can be configured to scrape pprof profiles from specific http endpoints.
+
+1. The below Kubernetes manifests, will deploy the open-source Parca in scraper mode, where it scrapes the pprof endpoints exposed by itself and sends the profiles to the Polar Signals Cloud.
+
+2. Create everything by running the following command:
+   You are now continuously profiling and sending the data to Polar Signals!
+
+3. Now you can head over to the Profile Explorer and browse your profiles.

@@ -32,12 +32,22 @@ const sidebars = {
     {
       type: "category",
       label: "Concepts",
-      items: ["what-is-continuous-profiling", "profiling-101", "organizations-and-projects"],
+      items: [
+        "what-is-continuous-profiling",
+        "profiling-101",
+        "organizations-and-projects",
+      ],
     },
     {
       type: "category",
       label: "Tutorial",
-      items: ["invite-users", "generating-tokens", "uploading-debuginfos"],
+      items: [
+        "setup-collection-kubernetes",
+        "setup-collection-cli",
+        "invite-users",
+        "generating-tokens",
+        "uploading-debuginfos",
+      ],
     },
   ],
 };
