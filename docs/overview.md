@@ -13,6 +13,18 @@ If you're here to understand what the Polar Signals Cloud product is, we recomme
 
 ### I already use Polar Signals Cloud
 
+Language Support:
+
+1. C/C++
+2. Rust
+3. Go
+4. [Node.js](nodejs)
+5. Erlang
+6. Julia
+7. Java/Clojure/Kotlin/JVM
+8. Ruby (coming soon)
+9. Python (coming soon)
+
 User Management:
 
 1. [Organizations and Projects](organizations-and-projects)
