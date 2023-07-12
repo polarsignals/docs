@@ -36,6 +36,13 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Language Support",
+      items: [
+        "nodejs",
+      ],
+    },
+    {
+      type: "category",
       label: "Tutorial",
       items: ["invite-users", "generating-tokens", "uploading-debuginfos"],
     },
