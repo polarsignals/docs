@@ -16,7 +16,11 @@ module.exports = function () {
             releases = await response.json();
             const debuginfo_cli = releases[0] ? releases[0].tag_name : 'v0.1.0';
 
-            return {server: server, agent: agent, debuginfo_cli: debuginfo_cli};
+            response = await fetch("https://api.github.com/repos/parca-dev/parca-push/releases?per_page=1");
+            releases = await response.json();
+            const push_cli = releases[0] ? releases[0].tag_name : 'v0.1.0';
+
+            return {server: server, agent: agent, debuginfo_cli: debuginfo_cli, push_cli: push_cli};
         },
         async contentLoaded({content, actions}) {
             const {setGlobalData} = actions;

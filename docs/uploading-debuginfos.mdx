@@ -1,5 +1,4 @@
-import WithVersions from '@site/src/components/WithVersions';
-import CodeBlock from '@theme/CodeBlock';
+import InstallParcaDebuginfo from '@site/src/components/InstallParcaDebuginfo';
 
 # Uploading Debuginfos
 
@@ -15,41 +14,7 @@ The solution to this problem is to upload debuginfos out of band, using the `par
 
 ### Install the CLI
 
-Download it:
-
-<WithVersions language="bash">
-  { versions =>
-    <CodeBlock className="language-bash">
-      curl -sL https://github.com/parca-dev/parca-debuginfo/releases/download/{versions.debuginfo_cli}/parca-debuginfo_{versions.debuginfo_cli.substring(1)}_`uname -s`_`uname -m`.tar.gz > parca-debuginfo_{versions.debuginfo_cli.substring(1)}_`uname -s`_`uname -m`.tar.gz
-    </CodeBlock>
-  }
-</WithVersions>
-
-Verify the checksum:
-
-<WithVersions language="bash">
-  { versions =>
-    <CodeBlock className="language-bash">
-      curl -sL https://github.com/parca-dev/parca-debuginfo/releases/download/{versions.debuginfo_cli}/checksums.txt | shasum --ignore-missing -a 256 --check
-    </CodeBlock>
-  }
-</WithVersions>
-
-And unpack it:
-
-<WithVersions language="bash">
-  { versions =>
-    <CodeBlock className="language-bash">
-      tar -xzf parca-debuginfo_{versions.debuginfo_cli.substring(1)}_`uname -s`_`uname -m`.tar.gz parca-debuginfo
-    </CodeBlock>
-  }
-</WithVersions>
-
-If you want to move the CLI to a path in your `$PATH` you can move the binary (adjust to your preferred location):
-
-```
-mv parca-debuginfo /usr/local/bin/parca-debuginfo
-```
+<InstallParcaDebuginfo />
 
 ### Obtain a token
 

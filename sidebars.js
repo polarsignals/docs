@@ -44,7 +44,15 @@ const sidebars = {
     {
       type: "category",
       label: "Tutorial",
-      items: ["invite-users", "generating-tokens", "uploading-debuginfos", "troubleshooting-agent"],
+      items: [
+          "invite-users", 
+          "generating-tokens", 
+          "uploading-debuginfos", 
+          "troubleshooting-agent",
+          "upload-source",
+          "install-parca-debuginfo",
+          "install-parca-push",
+      ],
     },
   ],
 };
