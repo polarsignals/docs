@@ -24,7 +24,7 @@ We recommend doing the following in a CI/CD pipeline.
 First, we need to build the source archive. This `parca-debuginfo` command reads the files referenced in the debuginfo of the given binary and produces an archive with all the files referenced.
 
 ```
-parca-debuginfo source ./main ./source.tar.zstd
+parca-debuginfo source ./main
 ```
 
 Now we're ready to upload it, also using `parca-debuginfo`.
