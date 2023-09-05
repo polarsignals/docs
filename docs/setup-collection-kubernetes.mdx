@@ -1,0 +1,228 @@
+# Setup collection using Kubernetes
+
+## Prerequisites:
+
+- Kubernetes Cluster.
+- Kubernetes Nodes are running Linux 5.4 or newer.
+
+### Grab an API token
+
+To be able to send any data to Polar Signals, we're going to need an API token for the
+collection mechanism to authenticate with the Polar Signals API.
+
+There's documentation over at [Generating Tokens](generating-tokens) that explains how to do this.
+
+### Instructions
+
+The Kubernetes manifest below, will deploy the Polar Signals continuous profiling agent to a Kubernetes cluster. Here's what it does in summary:
+
+1. Creates a namespace called polarsignals to deploy the agent into.
+2. Creates a secret containing the Polarsignals API token (which you should have created above) for authentication.
+3. Defines a ClusterRole and ClusterRoleBinding to grant the agent permissions to list pods and get node info across the cluster.
+4. Deploys the agent as a DaemonSet on all nodes. The agent container runs with some privileged settings to enable profiling.
+
+The agent will then profile applications running on the pods and nodes and send the profiling data to the Polar Signals backend for analysis.
+
+Make sure to paste in your generated API token and then copy the manifest below into a file called `polarsignals-agent.yaml`, then apply it to your Kubernetes cluster using the command below.
+
+```bash
+kubectl apply -f polarsignals-agent.yaml
+```
+
+<div style={{
+   maxHeight: '500px',
+   overflow: 'scroll',
+   marginBottom: '20px'
+}}>
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/warn: privileged
+  name: polarsignals
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: polarsignals-agent
+  namespace: polarsignals
+  labels:
+    app.kubernetes.io/component: continuous-profiler
+    app.kubernetes.io/instance: polarsignals-agent
+    app.kubernetes.io/name: polarsignals-agent
+stringData:
+  token: <your-token-here>
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: continuous-profiler
+    app.kubernetes.io/instance: polarsignals-agent
+    app.kubernetes.io/name: polarsignals-agent
+  name: polarsignals-agent
+  namespace: polarsignals
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: continuous-profiler
+    app.kubernetes.io/instance: polarsignals-agent
+    app.kubernetes.io/name: polarsignals-agent
+  name: polarsignals-agent
+  namespace: polarsignals
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: polarsignals-agent
+subjects:
+  - kind: ServiceAccount
+    name: polarsignals-agent
+    namespace: polarsignals
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app.kubernetes.io/component: continuous-profiler
+    app.kubernetes.io/instance: polarsignals-agent
+    app.kubernetes.io/name: polarsignals-agent
+  name: polarsignals-agent
+  namespace: polarsignals
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: continuous-profiler
+      app.kubernetes.io/instance: polarsignals-agent
+      app.kubernetes.io/name: polarsignals-agent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: continuous-profiler
+        app.kubernetes.io/instance: polarsignals-agent
+        app.kubernetes.io/name: polarsignals-agent
+        app.kubernetes.io/version: v0.23.2
+    spec:
+      containers:
+        - args:
+            - /bin/parca-agent
+            - --log-level=info
+            - --node=$(NODE_NAME)
+            - --http-address=:7071
+            - --remote-store-address=grpc.polarsignals.com:443
+            - --remote-store-bearer-token-file=/var/polarsignals-agent/token
+            - --debuginfo-strip
+            - --debuginfo-temp-dir=/tmp
+            - --debuginfo-upload-cache-duration=5m
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          image: ghcr.io/parca-dev/parca-agent:v0.23.2
+          name: polarsignals-agent
+          ports:
+            - containerPort: 7071
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+          resources: {}
+          securityContext:
+            privileged: true
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /run
+              name: run
+            - mountPath: /boot
+              name: boot
+              readOnly: true
+            - mountPath: /lib/modules
+              name: modules
+            - mountPath: /sys/kernel/debug
+              name: debugfs
+            - mountPath: /sys/fs/cgroup
+              name: cgroup
+            - mountPath: /sys/fs/bpf
+              name: bpffs
+            - mountPath: /var/run/dbus/system_bus_socket
+              name: dbus-system
+            - mountPath: /var/polarsignals-agent
+              name: token
+      hostPID: true
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: polarsignals-agent
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+      volumes:
+        - emptyDir: {}
+          name: tmp
+        - hostPath:
+            path: /run
+          name: run
+        - hostPath:
+            path: /boot
+          name: boot
+        - hostPath:
+            path: /sys/fs/cgroup
+          name: cgroup
+        - hostPath:
+            path: /lib/modules
+          name: modules
+        - hostPath:
+            path: /sys/fs/bpf
+          name: bpffs
+        - hostPath:
+            path: /sys/kernel/debug
+          name: debugfs
+        - hostPath:
+            path: /var/run/dbus/system_bus_socket
+          name: dbus-system
+        - secret:
+            secretName: polarsignals-agent
+          name: token
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: continuous-profiler
+    app.kubernetes.io/instance: polarsignals-agent
+    app.kubernetes.io/name: polarsignals-agent
+  name: polarsignals-agent
+  namespace: polarsignals
+```
+
+</div>
+
+You can also use the command below to apply the manifest directly from the Polar Signals API.
+
+```bash
+kubectl apply -f https://api.polarsignals.com/api/manifests.yaml?token=<your-token>
+```

@@ -26,6 +26,10 @@ Language Support:
 9. Ruby (coming soon)
 10. Python (coming soon)
 
+Setup Collection:
+
+1. [Setup collection with Kubernetes](setup-collection-kubernetes)
+
 User Management:
 
 1. [Organizations and Projects](organizations-and-projects)
