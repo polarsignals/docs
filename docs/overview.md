@@ -29,7 +29,6 @@ Language Support:
 Setup Collection:
 
 1. [Setup collection with Kubernetes](setup-collection-kubernetes)
-2. [Setup collection via CLI](setup-collection-cli)
 
 User Management:
 
