@@ -40,6 +40,11 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Language Support",
+      items: ["nodejs"],
+    },
+    {
+      type: "category",
       label: "Tutorial",
       items: [
         "setup-collection-kubernetes",
@@ -47,6 +52,10 @@ const sidebars = {
         "invite-users",
         "generating-tokens",
         "uploading-debuginfos",
+        "troubleshooting-agent",
+        "upload-source",
+        "install-parca-debuginfo",
+        "install-parca-push",
       ],
     },
   ],

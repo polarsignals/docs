@@ -1,0 +1,49 @@
+import InstallParcaDebuginfo from '@site/src/components/InstallParcaDebuginfo';
+
+# Upload Source
+
+In order to be able to use the source view feature of Polar Signals Cloud, an archive that includes the source code needs to be uploaded for each Build ID of a binary.
+
+We recommend doing the following in a CI/CD pipeline.
+
+> Note: At the moment this only works for compiled binaries, not for just-in-time compiled or interpreted code.
+
+## Prerequisites
+
+* [An authentication token](generating-tokens.mdx)
+* [parca-debuginfo](https://github.com/parca-dev/parca-debuginfo)
+
+### Install `parca-debuginfo`
+
+<InstallParcaDebuginfo />
+
+> Note: For the purpose of demonstration we'll be using [this example repository](https://github.com/polarsignals/sources-demo) with the Go compiler. You can use the pre-built binary checked into the repository, or build it with: `GOOS=linux GOARCH=amd64 go build main.go`.
+
+## Build & Upload Source Archive
+
+First, we need to build the source archive. This `parca-debuginfo` command reads the files referenced in the debuginfo of the given binary and produces an archive with all the files referenced.
+
+```
+parca-debuginfo source ./main
+```
+
+Now we're ready to upload it, also using `parca-debuginfo`.
+
+```
+parca-debuginfo upload 
+  --store-address=grpc.polarsignals.com:443
+  --bearer-token=<your token>
+  --build-id="$(parca-debuginfo buildid ./main)"
+  --type=sources
+  source.tar.zstd
+```
+
+Let's look at each of those flags:
+
+* `--store-address=grpc.polarsignals.com:443`: This is the Polar Signals Cloud endpoint that accepts the upload request.
+* `--bearer-token=<your token>`: This is the authentication token (see [here](generating-tokens) how to obtain it).
+* `--build-id="$(parca-debuginfo buildid ./main)"`: We need to associate the source code with the binary, that is done using the binary's Build ID. The `parca-debuginfo` utility can read the Build ID, which is what we're doing here.
+* `--type=sources`: The `parca-debuginfo` tool can upload debuginfo, executables and source code. In this case we're specifying that we're uploading source code.
+* `source.tar.zstd` is the file we previously generated above.
+
+And you're done! Now when looking at profiling data of that Build ID, you'll be able to open the source view and see profiling data inlined with your code.

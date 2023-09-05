@@ -1,3 +1,5 @@
+import InstallParcaDebuginfo from '@site/src/components/InstallParcaDebuginfo';
+
 # Uploading Debuginfos
 
 In order to resolve memory addresses to human readable function names for compiled languages such as Go, Rust, C, C++, or Haskell, you must provide these mappings (referred to as debuginfos) to Polar Signals Cloud.
@@ -12,29 +14,7 @@ The solution to this problem is to upload debuginfos out of band, using the `par
 
 ### Install the CLI
 
-Download it:
-
-```
-curl -sLO https://github.com/parca-dev/parca-debuginfo/releases/download/v0.4.0/parca-debuginfo_0.4.0_`uname -s`_`uname -m`.tar.gz
-```
-
-Verify the checksum:
-
-```
-curl -sL https://github.com/parca-dev/parca-debuginfo/releases/download/v0.4.0/checksums.txt | shasum --ignore-missing -a 256 --check
-```
-
-And unpack it:
-
-```
-tar -xzf parca-debuginfo_0.4.0_`uname -s`_`uname -m`.tar.gz parca-debuginfo
-```
-
-If you want to move the CLI to a path in your `$PATH` you can move the binary (adjust to your preferred location):
-
-```
-mv parca-debuginfo /usr/local/bin/parca-debuginfo
-```
+<InstallParcaDebuginfo />
 
 ### Obtain a token
 
@@ -46,4 +26,18 @@ Finally you can use the authentication token to issue the upload command:
 
 ```
 parca-debuginfo upload --store-address=grpc.polarsignals.com:443 --bearer-token=<the-token-you-obtained> /path/to/your/binary
+```
+
+## Troubleshooting
+
+Below are some common troubleshooting scenarios and solutions.
+
+### Debuginfo Already Exists
+
+For various reasons debuginfo with the same build ID might already exist. For example the agent eagerly uploaded debuginfos from the production binary but they were not high quality, because the high quality debuginfos are split off of the production binary in build pipelines.
+
+If you still want to replace the existing debuginfos with the debuginfos use the `--force` flag. So the full command might look something like this:
+
+```
+parca-debuginfo upload --store-address=grpc.polarsignals.com:443 --bearer-token=<the-token-you-obtained> /path/to/your/binary --force
 ```

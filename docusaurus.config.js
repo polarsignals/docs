@@ -48,6 +48,10 @@ const config = {
     ],
   ],
 
+  plugins: [
+    require.resolve("./docusaurus-github-releases-plugin/src/index.js"),
+  ],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
