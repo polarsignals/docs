@@ -55,6 +55,7 @@ const sidebars = {
         "upload-source",
         "install-parca-debuginfo",
         "install-parca-push",
+        "setup-scraper",
       ],
     },
   ],

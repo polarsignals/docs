@@ -1,0 +1,205 @@
+# Setup Scraping
+
+While the primary way to write data to Polar Signals Cloud is to [use the agent](setup-collection-kubernetes), there may be reasons to want to write additional data that cannot be obtained via the agent.
+
+## Languages
+
+Here is a table of Languages/runtimes and libraries that can be used to gather additional types of profiling data.
+
+| Language/runtime | Heap | Allocations | Blocking | Mutex Contention | Extra |
+|---|---|---|---|---|---|
+| [Go](https://golang.org/pkg/net/http/pprof/) | Yes | Yes | Yes | Yes | Goroutine, [`fgprof`](https://github.com/felixge/fgprof) |
+| [Python](https://pypi.org/project/pypprof/) | Yes | No | No | No |  |
+| [NodeJS](https://github.com/google/pprof-nodejs) | Yes | No | No | No |  |
+
+## Setup
+
+The below manifests deploy the Polar Signals scraper, which discovers containers in a Kubernetes cluster and starts scraping them.
+
+:::info The configuration is identical to the [Prometheus scrape config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config), Kubernetes is just used as an example here.
+:::
+
+```bash
+kubectl apply -f polarsignals-scraper.yaml
+```
+
+<div style={{
+   maxHeight: '500px',
+   overflow: 'scroll',
+   marginBottom: '20px'
+}}>
+
+```yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: polarsignals
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: profile-scraper
+    app.kubernetes.io/instance: polarsignals-scraper
+    app.kubernetes.io/name: polarsignals-scraper
+  name: polarsignals-scraper
+  namespace: polarsignals
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: profile-scraper
+    app.kubernetes.io/instance: polarsignals-scraper
+    app.kubernetes.io/name: polarsignals-scraper
+    app.kubernetes.io/version: v0.19.0
+  name: polarsignals-scraper
+  namespace: polarsignals
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: polarsignals-scraper
+subjects:
+- kind: ServiceAccount
+  name: polarsignals-scraper
+  namespace: polarsignals
+---
+apiVersion: v1
+data:
+  polarsignals-scraper.yaml: |-
+    scrape_configs:
+    - job_name: 'kubernetes-pods'
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_app_kubernetes_io_(.+)
+        replacement: "app_kubernetes_io_$1"
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: replace
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        action: replace
+        target_label: container
+
+kind: ConfigMap
+metadata:
+  name: polarsignals-scraper-config
+  namespace: polarsignals
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: profile-scraper
+    app.kubernetes.io/instance: polarsignals-scraper
+    app.kubernetes.io/name: polarsignals-scraper
+  name: polarsignals-scraper
+  namespace: polarsignals
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: profile-scraper
+      app.kubernetes.io/instance: polarsignals-scraper
+      app.kubernetes.io/name: polarsignals-scraper
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: profile-scraper
+        app.kubernetes.io/instance: polarsignals-scraper
+        app.kubernetes.io/name: polarsignals-scraper
+        app.kubernetes.io/version: v0.19.0
+    spec:
+      securityContext:
+        fsGroup: 65534
+        runAsUser: 65534
+      containers:
+      - args:
+        - /parca
+        - --config-path=/var/polarsignals-scraper/polarsignals-scraper.yaml
+        image: ghcr.io/parca-dev/parca:v0.19.0
+        livenessProbe:
+          exec:
+            command:
+            - /grpc_health_probe
+            - -v
+            - -addr=:7070
+          initialDelaySeconds: 5
+        name: polarsignals-scraper
+        ports:
+        - containerPort: 7070
+          name: http
+        readinessProbe:
+          exec:
+            command:
+            - /grpc_health_probe
+            - -v
+            - -addr=:7070
+          initialDelaySeconds: 10
+        terminationMessagePolicy: FallbackToLogsOnError
+        resources: {}
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /var/polarsignals-scraper
+          name: poularsignals-scraper-config
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: polarsignals-scraper
+      tolerations:
+      - effect: NoSchedule
+        operator: Exists
+      - effect: NoExecute
+        operator: Exists
+      volumes:
+      - emptyDir: {}
+        name: tmp
+      - configMap:
+          name: polarsignals-scraper
+        name: polarsignals-scraper
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: profile-scraper
+    app.kubernetes.io/instance: polarsignals-scraper
+    app.kubernetes.io/name: polarsignals-scraper
+  name: polarsignals-scraper
+  namespace: polarsignals-scraper
+```
+
+</div>
+
+## Configuration
+
+The configuration is identical to the [Prometheus scrape config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config), so anything described there can be used to configure the Polar Signals Scraper.
+
+A common thing to do is not scrape all containers in a Kubernetes cluster, but only a specific container name for example. That can be done by adding the following snippet:
+
+```yaml
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        action: keep
+        regex: my-container
+```
+
+If you ever wonder how to write a configuration feel free to [join our Discord server and ask](https://discord.gg/knw3u5X9bs)!
