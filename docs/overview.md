@@ -23,8 +23,8 @@ Language Support:
 6. Julia
 7. Java/Clojure/Kotlin/JVM
 8. .NET
-9. Ruby (coming soon)
-10. Python (coming soon)
+9. Ruby
+10. Python
 
 Setup Collection:
 
