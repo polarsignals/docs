@@ -5,25 +5,27 @@
 - Kubernetes Cluster.
 - Kubernetes Nodes are running Linux 5.4 or newer.
 
-### Grab an API token
+### Get an API token
 
-To be able to send any data to Polar Signals, we're going to need an API token for the
+To be able to send any data to Polar Signals Cloud, we're going to need an API token for the
 collection mechanism to authenticate with the Polar Signals API.
 
-There's documentation over at [Generating Tokens](generating-tokens) that explains how to do this.
+Please refer to the [Generating Tokens](generating-tokens) documentation that has more details.
 
 ### Instructions
 
-The Kubernetes manifest below, will deploy the Polar Signals continuous profiling agent to a Kubernetes cluster. Here's what it does in summary:
+The Kubernetes manifest below, will deploy the Polar Signals Agent as DaemonSet to a Kubernetes cluster. Here's what it does in summary:
 
-1. Creates a namespace called polarsignals to deploy the agent into.
+1. Creates a namespace called `polarsignals` to deploy the agent into.
 2. Creates a secret containing the Polarsignals API token (which you should have created above) for authentication.
 3. Defines a ClusterRole and ClusterRoleBinding to grant the agent permissions to list pods and get node info across the cluster.
-4. Deploys the agent as a DaemonSet on all nodes. The agent container runs with some privileged settings to enable profiling.
+4. Deploys the agent as a DaemonSet. This will deploy a pod to each nodes in the cluster. The agent container runs with some privileged settings to enable profiling via eBPF.
 
-The agent will then profile applications running on the pods and nodes and send the profiling data to the Polar Signals backend for analysis.
+The agent will then profile all applications running on the nodes and send the profiling data to the Polar Signals Cloud for queries and analysis.
 
 Make sure to paste in your generated API token and then copy the manifest below into a file called `polarsignals-agent.yaml`, then apply it to your Kubernetes cluster using the command below.
+
+[//]: # (TODO: Remove this in favor of https://api.polarsignals.com/api/manifests.yaml?)
 
 ```bash
 kubectl apply -f polarsignals-agent.yaml

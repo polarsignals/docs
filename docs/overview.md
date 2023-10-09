@@ -1,6 +1,7 @@
 # Overview
 
-Polar Signals Cloud is a hosted service to store and analyze continuous profiling data. Thanks to our zero-instrumentation technology all you do is deploy our agent on your node and send the data to Polar Signals Cloud and you're ready to go!
+Polar Signals Cloud is a hosted service to store and analyze continuous profiling data. 
+Thanks to our zero-instrumentation technology all you do is deploy our agent on your node and send the data to Polar Signals Cloud and you're ready to go!
 
 ## What are you looking for?
 
@@ -16,15 +17,15 @@ If you're here to understand what the Polar Signals Cloud product is, we recomme
 Language Support:
 
 1. C/C++
-2. Rust
-3. Go
-4. [Node.js](nodejs)
-5. Erlang
-6. Julia
-7. Java/Clojure/Kotlin/JVM
-8. .NET
-9. Ruby
-10. Python
+1. Rust
+1. Go
+1. Ruby
+1. Python
+1. Java/Clojure/Kotlin/JVM
+1. [Node.js](nodejs)
+1. Erlang
+1. Julia
+1. .NET
 
 Setup Collection:
 

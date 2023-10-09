@@ -1,21 +1,27 @@
 # Organizations and Projects
 
 ## Organizations
-Organizations are collections of projects and where permissions for users are granted. A user may create multiple organizations to separate projects under different companies or teams. 
+Organizations are collections of projects. Users are managed on a per-organization basis.
+A user may create multiple organizations to separate projects under different companies or teams. 
 
 :::tip
-We recommend to create an organization per company.
+We recommend to create an organization per company.  
+This allows to query across your entire company, using label matchers to query for specifics.
 :::
 
-An organization can have multiple users who have access to all projects under the organization. Users can invite other users to join and manage the organization. Check out the [Invite Users](/docs/invite-users) page for more information on inviting users to an organization.
+An organization can have multiple users who have access to all projects under the organization. 
+Users can invite other users to join and manage the organization.
+Check out the [Invite Users](/docs/invite-users) page for more information on inviting users to an organization.
 
 The name of the organization can typically be the name of the company or the department.
 
-Example: **My Company**.
+Example: **ACME Company**.
 
 ## Projects
-Projects are the workspaces for profile data within an organization, mainly to collect profiles that belong to a specific application or environment. Profiles within a project can be compared and analysed against each other as required.
-In other words, Projects are the unit of separation, data from two projects cannot be queried across each other.
+
+Projects are the workspaces for profile data within an organization, mainly to collect profiles that belong to a specific application or environment. 
+Profiles within a project can be compared and analysed against each other as required.
+In other words, projects are the unit of separation, data from two projects cannot be queried across each other.
 
 There can be multiple projects within an organization, and the users of an organization have access to all projects within the organization. 
 
@@ -25,4 +31,4 @@ We recommend starting with creating one project and writing all data to a single
 
 The name of the project can typically be the name of the application or the environment.
 
-Example: **Production Environment**.
+Examples: **Production**, **Staging**, **Testing**.
