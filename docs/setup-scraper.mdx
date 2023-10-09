@@ -1,4 +1,4 @@
-# Setup Scraping
+# Setup Scraping for sending to Polar Signals Cloud
 
 While the primary way to write data to Polar Signals Cloud is to [use the agent](setup-collection-kubernetes), there may be reasons to want to write additional data that cannot be obtained via the agent.
 
@@ -16,7 +16,8 @@ Here is a table of Languages/runtimes and libraries that can be used to gather a
 
 The below manifests deploy the Polar Signals scraper, which discovers containers in a Kubernetes cluster and starts scraping them.
 
-:::info The configuration is identical to the [Prometheus scrape config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config), Kubernetes is just used as an example here.
+:::info 
+The configuration is identical to the [Prometheus scrape config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config), Kubernetes is just used as an example here.
 :::
 
 ```bash
@@ -82,6 +83,7 @@ subjects:
 apiVersion: v1
 data:
   polarsignals-scraper.yaml: |-
+    # MODIFY THIS TO YOUR NEEDS
     scrape_configs:
     - job_name: 'kubernetes-pods'
       kubernetes_sd_configs:
@@ -192,7 +194,8 @@ metadata:
 
 ## Configuration
 
-The configuration is identical to the [Prometheus scrape config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config), so anything described there can be used to configure the Polar Signals Scraper.
+The configuration is identical to the [Prometheus scrape config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+Anything described in the Prometheus documentation can be used to configure the Polar Signals Scraper too.
 
 A common thing to do is not scrape all containers in a Kubernetes cluster, but only a specific container name for example. That can be done by adding the following snippet:
 
@@ -202,4 +205,4 @@ A common thing to do is not scrape all containers in a Kubernetes cluster, but o
         regex: my-container
 ```
 
-If you ever wonder how to write a configuration feel free to [join our Discord server and ask](https://discord.gg/knw3u5X9bs)!
+If you ever need help with specific changes to your configuration feel free to [join our Discord server and ask](https://discord.gg/knw3u5X9bs)!
