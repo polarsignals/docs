@@ -41,7 +41,7 @@ const sidebars = {
     {
       type: "category",
       label: "Language Support",
-      items: ["nodejs"],
+      items: ["nodejs", "c", "cpp"],
     },
     {
       type: "category",
