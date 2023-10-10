@@ -10,7 +10,7 @@ You just want to see the demo? Check out our demos in our [Polar Signals Cloud Y
 
 ## What is Continuous Profiling?
 
-If you're not already familiar with Continuous Profiling, you might want to read our primer on it first: [What is Continuous Profiling?](what-is-continuous-profiling)
+If you're not already familiar with Continuous Profiling, you might want to read our primer on it first: [What is Continuous Profiling?](/docs/what-is-continuous-profiling)
 
 ## Polar Signals Cloud vs. Parca
 

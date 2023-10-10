@@ -6,10 +6,10 @@ It uses the `.eh_frame` section in ELF binaries to perform unwinding of stacks.
 
 ## Symbolization
 
-For memory addresses to be translated to human readable function names, file names, and line numbers, Polar Signals Cloud must be provided with what is referred to as "debuginfos". Debuginfos can be part of the production binary, or can be [uploaded separately in CI/CD pipelines](uploading-debuginfos).
+For memory addresses to be translated to human readable function names, file names, and line numbers, Polar Signals Cloud must be provided with what is referred to as "debuginfos". Debuginfos can be part of the production binary, or can be [uploaded separately in CI/CD pipelines](/docs/uploading-debuginfos).
 
 :::tip
-We recommend having debuginfos available in production binaries. Everything will just work out of the box without having to [upload the debuginfo separately in CI/CD pipelines](uploading-debuginfos), and it's always a good idea to have your binaries be debuggable for when the time comes.
+We recommend having debuginfos available in production binaries. Everything will just work out of the box without having to [upload the debuginfo separately in CI/CD pipelines](/docs/uploading-debuginfos), and it's always a good idea to have your binaries be debuggable for when the time comes.
 :::
 
 To generate debuginfos use the `-g` flag.
@@ -42,4 +42,4 @@ strip --only-keep-debug main.debug # creates the main.debug file containing debu
 strip --strip-debug --strip-unneeded # removes the debuginfo sections from the binary
 ```
 
-The `main.debug` could now be [uploaded separately in a CI/CD pipeline to Polar Signals Cloud](uploading-debuginfos). If debuginfos are available in the production binary this step is not necessary.
+The `main.debug` could now be [uploaded separately in a CI/CD pipeline to Polar Signals Cloud](/docs/uploading-debuginfos). If debuginfos are available in the production binary this step is not necessary.

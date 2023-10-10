@@ -9,34 +9,34 @@ Thanks to our zero-instrumentation technology all you do is deploy our agent on 
 
 If you're here to understand what the Polar Signals Cloud product is, we recommend reading:
 
-1. [What is Continuous Profiling?](what-is-continuous-profiling)
-2. [Why Polar Signals Cloud](why-polar-signals)
+1. [What is Continuous Profiling?](/docs/what-is-continuous-profiling)
+2. [Why Polar Signals Cloud](/docs/why-polar-signals)
 
 ### I already use Polar Signals Cloud
 
 Language Support:
 
-1. [C](c)/[C++](cpp)
-1. [Rust](rust)
-1. [Go](go)
+1. [C](/docs/c)/[C++](/docs/cpp)
+1. [Rust](/docs/rust)
+1. [Go](/docs/go)
 1. Ruby
 1. Python
 1. Java/Clojure/Kotlin/JVM
-1. [Node.js](nodejs)
+1. [Node.js](/docs/nodejs)
 1. Erlang
 1. Julia
 1. .NET
 
 Setup Collection:
 
-1. [Setup collection with Kubernetes](setup-collection-kubernetes)
+1. [Setup collection with Kubernetes](/docs/setup-collection-kubernetes)
 
 User Management:
 
-1. [Organizations and Projects](organizations-and-projects)
-2. [Inviting Users to an Org](invite-users)
+1. [Organizations and Projects](/docs/organizations-and-projects)
+2. [Inviting Users to an Org](/docs/invite-users)
 
 Miscellaneous:
 
-1. [Generating Tokens](generating-tokens)
-2. [Uploading Debuginfos](uploading-debuginfos)
+1. [Generating Tokens](/docs/generating-tokens)
+2. [Uploading Debuginfos](/docs/uploading-debuginfos)

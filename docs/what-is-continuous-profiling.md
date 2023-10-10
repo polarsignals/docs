@@ -16,7 +16,7 @@ After some time, typically 10 seconds, the data is saved and can be analyzed usi
 Because of high sampling rates being necessary for 10 seconds of data to be representative profiling traditionally adds a lot of overhead to a process,
 which is why it tends to be done one-off only during development or on an ad-hoc basis.
 
-Understand profiling in more depth in our [Profiling 101](profiling-101).
+Understand profiling in more depth in our [Profiling 101](/docs/profiling-101).
 
 ## What is Continuous Profiling?
 
@@ -25,5 +25,5 @@ Continuous Profiling takes the opposite trade-off, it profiles every process in 
 Doing this allows continuous profiling to gather enough data to build statistical significance over time, and with **very low overhead** (less than 1% with the Polar Signals Agent).
 
 Fortunately, because continuous profiling stores profiling data over time, new workflows are possible. 
-See [Why Polar Signals](why-polar-signals#what-can-i-do-with-polar-signals-cloud) to learn why you should do continuous profiling with Polar Signals Cloud.
+See [Why Polar Signals](/docs/why-polar-signals#what-can-i-do-with-polar-signals-cloud) to learn why you should do continuous profiling with Polar Signals Cloud.
 
