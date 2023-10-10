@@ -23,9 +23,9 @@ Language Support:
 1. Python
 1. Java/Clojure/Kotlin/JVM
 1. [Node.js](/docs/nodejs)
-1. Erlang
-1. Julia
-1. .NET
+1. [Erlang](/docs/erlang)
+1. [Julia](/docs/julia)
+1. [.NET](/docs/dotnet)
 
 Setup Collection:
 
