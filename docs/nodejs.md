@@ -14,7 +14,7 @@ node --perf-basic-prof --interpreted-frames-native-stack main.js
 
 ## Troubleshooting
 
-Below are some situations and how to troubleshoot them. If you've tried these and still haven't been able to resolve the issue, please [contact support](contact-support).
+Below are some situations and how to troubleshoot them. If you've tried these and still haven't been able to resolve the issue, please [contact support](/docs/contact-support).
 
 ### All I can see is memory addresses
 
