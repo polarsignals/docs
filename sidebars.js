@@ -30,6 +30,11 @@ const sidebars = {
       id: "why-polar-signals",
     },
     {
+      type: "doc",
+      label: "Contact Support",
+      id: "contact-support",
+    },
+    {
       type: "category",
       label: "Concepts",
       items: [
@@ -41,7 +46,7 @@ const sidebars = {
     {
       type: "category",
       label: "Language Support",
-      items: ["nodejs", "c", "cpp", "rust", "go", "erlang", "julia", "dotnet"],
+      items: ["nodejs", "c", "cpp", "rust", "go", "erlang", "julia", "dotnet", "python", "ruby"],
     },
     {
       type: "category",
