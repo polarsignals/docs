@@ -9,7 +9,7 @@ It uses the `.eh_frame` section in ELF binaries to perform unwinding of stacks.
 For memory addresses to be translated to human readable function names, file names, and line numbers, Polar Signals Cloud must be provided with what is referred to as "debuginfos". Debuginfos can be part of the production binary, or can be [uploaded separately in CI/CD pipelines](uploading-debuginfos).
 
 :::tip
-We recommend having debuginfos available in production binaries.
+We recommend having debuginfos available in production binaries. Everything will just work out of the box, and it's always a good idea to have your binaries be debuggable for when the time comes.
 :::
 
 To generate debuginfos use the `-g` flag.
