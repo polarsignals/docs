@@ -17,9 +17,8 @@ kubectl -n polarsignals port-forward <pod-name> 7071
 
 And then take a heap profile using `curl`:
 
-[//]: # (THIS URL doesn't seem right. Needs a /debug/pprof/heap path suffix?)
 ```
-curl http://localhost:7071 > heap.prof
+curl http://localhost:7071/debug/pprof/heap > /tmp/heap.pb.gz
 ```
 
 Please upload your file to [pprof.me](https://pprof.me/) which makes it accessible to others in an interactive way.
