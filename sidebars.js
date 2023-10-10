@@ -56,6 +56,8 @@ const sidebars = {
         "install-parca-debuginfo",
         "install-parca-push",
         "setup-scraper",
+        "filter-by-function",
+        "graph-tooltip-details",
       ],
     },
   ],
