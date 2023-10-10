@@ -18,7 +18,7 @@ Language Support:
 
 1. [C](c)/[C++](cpp)
 1. [Rust](rust)
-1. Go
+1. [Go](go)
 1. Ruby
 1. Python
 1. Java/Clojure/Kotlin/JVM
