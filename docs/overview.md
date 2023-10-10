@@ -16,7 +16,7 @@ If you're here to understand what the Polar Signals Cloud product is, we recomme
 
 Language Support:
 
-1. C/C++
+1. [C](c)/C++
 1. Rust
 1. Go
 1. Ruby
