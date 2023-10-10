@@ -50,6 +50,11 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Features",
+      items: ["filter-by-function", "graph-tooltip-details"],
+    },
+    {
+      type: "category",
       label: "Tutorial",
       items: [
         "setup-collection-kubernetes",
