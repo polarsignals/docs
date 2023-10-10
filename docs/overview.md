@@ -19,8 +19,8 @@ Language Support:
 1. [C](/docs/c)/[C++](/docs/cpp)
 1. [Rust](/docs/rust)
 1. [Go](/docs/go)
-1. Ruby
-1. Python
+1. [Ruby](/docs/ruby)
+1. [Python](/docs/python)
 1. Java/Clojure/Kotlin/JVM
 1. [Node.js](/docs/nodejs)
 1. [Erlang](/docs/erlang)
