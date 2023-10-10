@@ -45,6 +45,11 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Features",
+      items: ["filter-by-function", "graph-tooltip-details"],
+    },
+    {
+      type: "category",
       label: "Tutorial",
       items: [
         "setup-collection-kubernetes",
@@ -56,8 +61,6 @@ const sidebars = {
         "install-parca-debuginfo",
         "install-parca-push",
         "setup-scraper",
-        "filter-by-function",
-        "graph-tooltip-details",
       ],
     },
   ],
