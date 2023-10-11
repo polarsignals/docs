@@ -21,6 +21,7 @@ Language Support:
 1. [Go](/docs/go)
 1. [Ruby](/docs/ruby)
 1. [Python](/docs/python)
+1. [PHP](/docs/php)
 1. [Java/Clojure/Kotlin/JVM](/docs/jvm)
 1. [Graal Native](/docs/graal-native)
 1. [Node.js](/docs/nodejs)
