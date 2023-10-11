@@ -58,6 +58,7 @@ const sidebars = {
       label: "Tutorial",
       items: [
         "setup-collection-kubernetes",
+        "setup-collection-docker",
         "invite-users",
         "generating-tokens",
         "uploading-debuginfos",
