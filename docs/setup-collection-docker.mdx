@@ -1,0 +1,59 @@
+import WithVersions from '@site/src/components/WithVersions';
+import CodeBlock from '@theme/CodeBlock';
+
+# Setup collection using Docker
+
+## Prerequisites:
+
+- Linux 5.4 or newer.
+- Docker or Podman.
+
+### Get an API token
+
+To be able to send any data to Polar Signals Cloud, we're going to need an API token for the
+collection mechanism to authenticate with the Polar Signals API.
+
+Please refer to the [Generating Tokens](/docs/generating-tokens) documentation that has more details.
+
+### Run the container
+
+Running the Polar Signals Agent using docker can be done easily with this command:
+
+<WithVersions language="bash">
+  { versions =>
+    <CodeBlock className="language-bash">
+      docker run --rm -it \<br />
+      &nbsp;&nbsp;-p 7071:7071 \<br />
+      &nbsp;&nbsp;--privileged \<br />
+      &nbsp;&nbsp;--pid host \<br />
+      &nbsp;&nbsp;-v /sys/fs/bpf:/sys/fs/bpf \<br />
+      &nbsp;&nbsp;-v /run:/run \<br />
+      &nbsp;&nbsp;-v /boot:/boot \<br />
+      &nbsp;&nbsp;-v /lib/modules:/lib/modules \<br />
+      &nbsp;&nbsp;-v /sys/kernel/debug:/sys/kernel/debug \<br />
+      &nbsp;&nbsp;-v /sys/fs/cgroup:/sys/fs/cgroup \<br />
+      &nbsp;&nbsp;-v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket \<br />
+      &nbsp;&nbsp;ghcr.io/parca-dev/parca-agent:{versions.agent} \<br />
+      &nbsp;&nbsp;/bin/parca-agent \<br />
+      &nbsp;&nbsp;--remote-store-address=grpc.polarsignals.com:443 \<br />
+      &nbsp;&nbsp;--remote-store-bearer-token=&lt;your-token&gt;
+    </CodeBlock>
+  }
+</WithVersions>
+
+Let's go one by one what each of these flags are for:
+
+* `--privileged` The Polar Signals Agent needs to be privileged in order for the Linux Kernel to allow it to load the eBPF-based profiler into the host.
+* `--pid host` The Polar Signals Agent needs to be in the host PID namespace to allow it to discover metadata about processes. Without this all you would see is process IDs as metadata which is very hard to reason with.
+* Volumes:
+  * `/sys/fs/bpf` This is required to be able to load the eBPF program which is essential for the whole agent to work.
+  * `/run` This volume is used for discovering metadata from docker, crio, or other CRI compatible container runtimes. Optional but strongly recommended.
+  * `/boot` This volume is used for discovering whether the Kernel is supported. Optional but strongly recommended.
+  * `/lib/modules` This volume is used for symbolizing VDSO calls. Optional but strongly recommended.
+  * `/sys/kernel/debug` This not strictly necessary but this is required for logging to work with eBPF. Optional but strongly recommended.
+  * `/sys/fs/cgroup` This is required to discover metadata about processes running in containers/cgroups. Optional but strongly recommended.
+  * `/var/run/dbus/system_bus_socket` This is required to be able to discover systemd unit metadata. Optional but strongly recommended.
+* `ghcr.io/parca-dev/parca-agent:...` The container image.
+* `/bin/parca-agent` The binary to run.
+* `--remote-store-address=grpc.polarsignals.com:443` Configuring the agent to send the profiling data to Polar Signals Cloud.
+* `--remote-store-bearer-token=<your-token>` Authentication with Polar Signals Cloud. The token you grabbed in the [grab-a-token](#get-an-api-token) step.
