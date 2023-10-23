@@ -31,6 +31,11 @@ const sidebars = {
     },
     {
       type: "doc",
+      label: "Security Posture",
+      id: "security-posture",
+    },
+    {
+      type: "doc",
       label: "Contact Support",
       id: "contact-support",
     },
