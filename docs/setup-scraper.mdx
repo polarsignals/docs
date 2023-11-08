@@ -68,7 +68,6 @@ metadata:
     app.kubernetes.io/component: profile-scraper
     app.kubernetes.io/instance: polarsignals-scraper
     app.kubernetes.io/name: polarsignals-scraper
-    app.kubernetes.io/version: v0.19.0
   name: polarsignals-scraper
   namespace: polarsignals
 roleRef:
@@ -83,6 +82,11 @@ subjects:
 apiVersion: v1
 data:
   polarsignals-scraper.yaml: |-
+    object_storage:
+      bucket:
+        type: "FILESYSTEM"
+        config:
+          directory: "./data"
     # MODIFY THIS TO YOUR NEEDS
     scrape_configs:
     - job_name: 'kubernetes-pods'
@@ -129,7 +133,7 @@ spec:
         app.kubernetes.io/component: profile-scraper
         app.kubernetes.io/instance: polarsignals-scraper
         app.kubernetes.io/name: polarsignals-scraper
-        app.kubernetes.io/version: v0.19.0
+        app.kubernetes.io/version: v0.20.0
     spec:
       securityContext:
         fsGroup: 65534
@@ -138,7 +142,10 @@ spec:
       - args:
         - /parca
         - --config-path=/var/polarsignals-scraper/polarsignals-scraper.yaml
-        image: ghcr.io/parca-dev/parca:v0.19.0
+        - --store-address=grpc.polarsignals.com:443
+        - --bearer-token-file=/etc/parca-scraper/token
+        - --mode=scraper-only
+        image: ghcr.io/parca-dev/parca:v0.20.0
         livenessProbe:
           exec:
             command:
@@ -164,6 +171,8 @@ spec:
           name: tmp
         - mountPath: /var/polarsignals-scraper
           name: poularsignals-scraper-config
+        - mountPath: /etc/parca-scraper
+          name: polarsignals-agent
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: polarsignals-scraper
@@ -178,6 +187,12 @@ spec:
       - configMap:
           name: polarsignals-scraper
         name: polarsignals-scraper
+      - configMap:
+          name: polarsignals-scraper
+        name: polarsignals-scraper
+      - secret:
+          secretName: polarsignals-agent
+        name: token
 ---
 apiVersion: v1
 kind: ServiceAccount
