@@ -41,6 +41,8 @@ $ nm /path/to/libpython.so | grep PyRuntime
     000000000029a840 t _PyRuntimeState_ReInitThreads
 ```
 
+If you have `_PyRuntime` then your Python interpreter has symbols and you can enable Python profiling.
+
 Lastly, [the official Python Docker `-slim` images](https://hub.docker.com/_/python) do not have symbols because of space constraints, but you can copy the symbols from the "full" image into the "slim" image:
 
 ```dockerfile
