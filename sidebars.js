@@ -72,6 +72,7 @@ const sidebars = {
         "install-parca-debuginfo",
         "install-parca-push",
         "setup-scraper",
+        "filter-data-send",
       ],
     },
   ],
