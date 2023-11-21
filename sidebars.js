@@ -51,12 +51,26 @@ const sidebars = {
     {
       type: "category",
       label: "Language Support",
-      items: ["nodejs", "c", "cpp", "rust", "go", "erlang", "julia", "dotnet", "python", "ruby", "jvm", "graal-native", "php"],
+      items: [
+        "nodejs",
+        "c",
+        "cpp",
+        "rust",
+        "go",
+        "erlang",
+        "julia",
+        "dotnet",
+        "python",
+        "ruby",
+        "jvm",
+        "graal-native",
+        "php",
+      ],
     },
     {
       type: "category",
       label: "Features",
-      items: ["filter-by-function", "graph-tooltip-details"],
+      items: ["views", "filter-by-function", "graph-tooltip-details"],
     },
     {
       type: "category",
