@@ -16,6 +16,26 @@ node --perf-basic-prof-only-functions --interpreted-frames-native-stack main.js
 
 Below are some situations and how to troubleshoot them. If you've tried these and still haven't been able to resolve the issue, please [contact support](/docs/contact-support).
 
+### Only functions broken
+
+For a long time `--perf-basic-prof-only-functions` was broken and resulted in incomplete data, ensure you are using a new enough version that fixes it. 
+
+#### v16
+
+The fix is not being backported for v16. Use `--perf-basic-prof` instead.
+
+#### v18
+
+Fixed in [v18.19.0](https://github.com/nodejs/node/releases/tag/v18.19.0) (specifically commit [5f852cc](https://github.com/nodejs/node/commit/5f852cc9fe10198e730a9e7c13a1133ba3fd131b)) make sure to use v18.19.0 or newer of the v18 release series.
+
+#### v20
+
+It was [cherry-picked](https://github.com/nodejs/node/pull/50345) but has yet to be released. Use `--perf-basic-prof` until a fix is released.
+
+#### v21
+
+Fixed in [v21.1.0](https://github.com/nodejs/node/releases/tag/v21.1.0) (specifically commit [f4da308](https://github.com/nodejs/node/commit/f4da308f8d)) make sure to use v21.1.0 or newer of the v21 release series.
+
 ### All I can see is memory addresses
 
 First make sure the node process is started with the `--perf-basic-prof-only-functions` and `--interpreted-frames-native-stack` flags.
