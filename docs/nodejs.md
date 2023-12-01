@@ -30,11 +30,11 @@ Fixed in [v18.19.0](https://github.com/nodejs/node/releases/tag/v18.19.0) (speci
 
 #### v20
 
-It was [cherry-picked](https://github.com/nodejs/node/pull/50345) but has yet to be released. Use `--perf-basic-prof` until a fix is released.
+Fixed in [20.10.0](https://github.com/nodejs/node/releases/tag/v20.10.0) (specifically commit [e63aef9](https://github.com/nodejs/node/commit/e63aef91b4a553b07e94cf19f86f4132eb50c073)) make sure to use v20.10.0 or newer of the v20 release series.
 
 #### v21
 
-Fixed in [v21.1.0](https://github.com/nodejs/node/releases/tag/v21.1.0) (specifically commit [f4da308](https://github.com/nodejs/node/commit/f4da308f8d)) make sure to use v21.1.0 or newer of the v21 release series.
+Fixed in [v21.1.0](https://github.com/nodejs/node/releases/tag/v21.1.0) (specifically commit [f4da308](https://github.com/nodejs/node/commit/f4da308f8d7a93f7ea6919cd7914a117e11fbbfc)) make sure to use v21.1.0 or newer of the v21 release series.
 
 ### All I can see is memory addresses
 
