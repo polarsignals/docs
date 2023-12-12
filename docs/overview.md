@@ -32,6 +32,7 @@ Language Support:
 Setup Collection:
 
 1. [Setup collection with Kubernetes](/docs/setup-collection-kubernetes)
+2. [Setup collection with Snaps](/docs/setup-collection-snaps)
 
 User Management:
 
