@@ -1,0 +1,38 @@
+# Setup collection using Snaps
+
+## Prerequisites:
+
+- Linux 5.4 or newer.
+- [snapd](https://snapcraft.io/about)
+
+### Get an API token
+
+To be able to send any data to Polar Signals Cloud, we're going to need an API token for the
+collection mechanism to authenticate with the Polar Signals API.
+
+Please refer to the [Generating Tokens](/docs/generating-tokens) documentation that has more details.
+
+### Bootstrap with cloud-init
+
+If you're on a cloud or hypervisor that supports [`cloud-init`](https://cloudinit.readthedocs.io/en/latest/index.html) you can get started easily like so:
+
+```yaml
+#cloud-config
+snap:
+  commands:
+    - [install, parca-agent, --classic]
+    - [set, parca-agent, remote-store-bearer-token=<token>]
+    - [start, --enable, parca-agent]
+```
+
+### Install manually
+
+To setup collection on a machine that's already provisioned, use the following steps:
+
+```shell
+sudo snap install parca-agent --classic
+sudo snap set parca-agent remote-store-bearer-token=<token>
+sudo snap start --enable parca-agent
+```
+
+Learn more about the Parca Agent snap in the [Parca docs](https://www.parca.dev/docs/parca-agent-snap).
