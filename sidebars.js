@@ -90,6 +90,11 @@ const sidebars = {
         "filter-data-send",
       ],
     },
+    {
+      type: "category",
+      label: "Billing",
+      items: ["billing-usage-data", "invoices"],
+    },
   ],
 };
 
