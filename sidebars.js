@@ -70,7 +70,12 @@ const sidebars = {
     {
       type: "category",
       label: "Features",
-      items: ["views", "filter-by-function", "graph-tooltip-details"],
+      items: [
+        "views",
+        "filter-by-function",
+        "graph-tooltip-details",
+        "single-sign-on",
+      ],
     },
     {
       type: "category",
