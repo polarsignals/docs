@@ -20,3 +20,9 @@ To login using SSO:
 ![SSO Login Form](/img/sso/sso-login-page.png)
 3. Now click on "Sign in with SSO" and complete your SSO providers authentication flow.
 4. You will be redirected to the Polarsignals dashboard. 🎉
+
+
+## Security
+The SSO login is designed with security in mind. Here are some insights into the security measures in place:
+- **SSO Credentials**: The SSO credentials are stored encrypted in a vault instance, to which the application has a write-only access and that is reason you can only create new config and cannot edit exiting one if you have any modifications to make.
+- **HTTPS**: The SSO login is served over HTTPS to ensure that all data is encrypted in transit.
