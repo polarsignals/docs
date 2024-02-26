@@ -1,7 +1,12 @@
 # Single Sign-On (SSO) Login
 Provides a way to log in to the system using your organization's single sign-on (SSO) provider.
 
-## Configuration
+## SSO Provider Configuration
+1. Login to your companies SSO provider account and create a new app integration for Polar Signals Cloud.
+2. Fill the required fields and use the following as the redirect URL: `https://identity.polarsignals.com/callback`
+3. Once the app is created, you will be provided with a client ID and client secret. You will need to use these to configure the SSO login in the Polar Signals Cloud dashboard.
+
+## Polar Signals Cloud Configuration
 You can configure the SSO login by following these steps:
 1. Go to your organization's settings page.
 ![Open Organization Settings](/img/sso/navigate-to-organization-settings-page.png)
@@ -15,11 +20,15 @@ You can configure the SSO login by following these steps:
 
 ## Usage
 To login using SSO:
-1. Go to the SSO login page here: [https://cloud.polarsignals.com/login/sso](https://cloud.polarsignals.com/login/sso)
-2. Enter your organization's identifier and click on "Verify".
+1. Go to the SSO login page here: [https://cloud.polarsignals.com/login/sso](https://cloud.polarsignals.com/login/sso) or use the link provided on your organization settings page which will prefill the details on the next step.
+2. Enter your organization's identifier
 ![SSO Login Form](/img/sso/sso-login-page.png)
 3. Now click on "Sign in with SSO" and complete your SSO providers authentication flow.
 4. You will be redirected to the Polarsignals dashboard. 🎉
+
+:::info
+Note: If you would like a URL that will automatically redirect to your SSO provider, you can add `autologin=true` query param to your SSO URL.<br/>Auto login URL Format: `https://cloud.polarsignals.com/login/sso?org=<your-organization-identifier>&autologin=true`
+:::
 
 
 ## Security
