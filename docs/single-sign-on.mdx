@@ -2,9 +2,10 @@
 Provides a way to log in to the system using your organization's single sign-on (SSO) provider.
 
 ## SSO Provider Configuration
-1. Login to your companies SSO provider account and create a new app integration for Polar Signals Cloud.
-2. Fill the required fields and use the following as the redirect URL: `https://identity.polarsignals.com/callback`
-3. Once the app is created, you will be provided with a client ID and client secret. You will need to use these to configure the SSO login in the Polar Signals Cloud dashboard.
+1. Log in to your company's SSO provider account and create a new app integration for Polar Signals Cloud.
+2. Fill in the required fields and use the following as the redirect URL: `https://identity.polarsignals.com/callback`
+	1. Use the scopes: `profile`, `email`, and `groups`. Learn more in the [Dex documentation](https://dexidp.io/docs/configuration/custom-scopes-claims-clients/).
+3. Once the app is created, you will receive a client ID and client secret. You must use these to configure the SSO login in the Polar Signals Cloud dashboard.
 
 ## Polar Signals Cloud Configuration
 You can configure the SSO login by following these steps:
@@ -19,12 +20,12 @@ You can configure the SSO login by following these steps:
 ![SSO Activated SSO](/img/sso/sso-activated.png)
 
 ## Usage
-To login using SSO:
-1. Go to the SSO login page here: [https://cloud.polarsignals.com/login/sso](https://cloud.polarsignals.com/login/sso) or use the link provided on your organization settings page which will prefill the details on the next step.
+To log in using SSO:
+1. Go to the SSO login page here: [https://cloud.polarsignals.com/login/sso](https://cloud.polarsignals.com/login/sso) or use the link provided on your organization settings page, which will prefill the details on the next step.
 2. Enter your organization's identifier
 ![SSO Login Form](/img/sso/sso-login-page.png)
-3. Now click on "Sign in with SSO" and complete your SSO providers authentication flow.
-4. You will be redirected to the Polarsignals dashboard. 🎉
+3. Now click on "Sign in with SSO" and complete your SSO provider's authentication flow.
+4. You will be redirected to the Polar Signals dashboard. 🎉
 
 :::info
 Note: If you would like a URL that will automatically redirect to your SSO provider, you can add `autologin=true` query param to your SSO URL.<br/>Auto login URL Format: `https://cloud.polarsignals.com/login/sso?org=<your-organization-identifier>&autologin=true`
@@ -33,5 +34,5 @@ Note: If you would like a URL that will automatically redirect to your SSO provi
 
 ## Security
 The SSO login is designed with security in mind. Here are some insights into the security measures in place:
-- **SSO Credentials**: The SSO credentials are stored encrypted in a vault instance, to which the application has a write-only access and that is reason you can only create new config and cannot edit exiting one if you have any modifications to make.
-- **HTTPS**: The SSO login is served over HTTPS to ensure that all data is encrypted in transit.
+- **SSO Credentials**: The SSO credentials are stored encrypted in a [Vault](https://github.com/hashicorp/vault) instance, to which the application has write-only access. For that reason, you can only create new configs and cannot edit an existing one if you have any modifications to make.
+- **HTTPS**: The SSO login is served over HTTPS to ensure all data is encrypted in transit.
