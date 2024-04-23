@@ -43,6 +43,13 @@ Polar Signals implements modern supply chain security standards.
 - **Signature Verification**:
    - Providing signatures for release artifacts to ensure integrity and authenticity using [sigstore](https://www.sigstore.dev/).
 
+## 5. Network Endpoints
+
+Using the Polar Signals agent involves communication with the Polar Signals Cloud service. The only two endpoints needed for this communication are:
+
+* `grpc.polarsignals.com` (port 443) for the gRPC push APIs, which upload the profiling data.
+* `storage.googleapis.com` (port 443) for the Google Cloud Storage API, which is used for signed uploads of symbols of binaries.
+
 ## Disclosure
 
 To disclose any security vulnerabilities please write to [security@polarsignals.com](emailto:security@polarsiglals.com).
