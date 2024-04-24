@@ -49,7 +49,6 @@ Using the Polar Signals agent involves communication with the Polar Signals Clou
 
 * `grpc.polarsignals.com` (IP: 35.234.93.182, port: 443) for the gRPC push APIs, which upload the profiling data.
 * `api.googleapis.com` (IP: 35.234.93.182, port: 443) for the Google Cloud Storage API, which is used for signed uploads of symbols of binaries.
-* `storage.googleapis.com` (IP: varying, port 443) for the Google Cloud Storage API, which is used for signed uploads of symbols of binaries. (legacy)
 
 ## Disclosure
 
