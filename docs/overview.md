@@ -1,6 +1,6 @@
 # Overview
 
-Polar Signals Cloud is a hosted service to store and analyze continuous profiling data. 
+Polar Signals Cloud is a hosted service to store and analyze continuous profiling data.
 Thanks to our zero-instrumentation technology all you do is deploy our agent on your node and send the data to Polar Signals Cloud and you're ready to go!
 
 ## What are you looking for?
@@ -38,6 +38,8 @@ User Management:
 
 1. [Organizations and Projects](/docs/organizations-and-projects)
 2. [Inviting Users to an Org](/docs/invite-users)
+3. [User Roles](/docs/user-roles)
+4. [Single Sign-On (SSO)](/docs/single-sign-on)
 
 Miscellaneous:
 
