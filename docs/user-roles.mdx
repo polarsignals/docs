@@ -1,0 +1,33 @@
+# Organization User Roles
+Polar Signals Cloud has two user roles: Owner, Viewer. Each role has different permissions and capabilities.
+
+## Owner
+The Owner role has full access to the organization and can perform all actions. This includes:
+- Viewing profiling reports
+- Creating and deleting projects
+- Inviting users
+- Changing user roles
+- Configuring Single Sign-On (SSO)
+- Managing billing
+- Deleting the organization
+
+## Viewer
+The Viewer role has read-only access to the organization. This includes:
+- Viewing profiling reports
+- Viewing projects
+
+
+## Changing User Roles
+Any user with the Owner role can change the role of another user in the organization.
+
+To change a user's role:
+1. Go to the organization settings page.
+2. Scroll down to the "Users" section.
+3. Click on the "Manage Access" button next to the user you want to change the role for.
+	![Users Section](/img/roles/users-section.png)
+4. Select the new role from the popup and click "Save".
+	![Roles Popup](/img/roles/role-popup.png)
+
+:::info
+Note: You cannot change the role of the last Owner in the organization. Make sure there is at least one Owner in the organization at all times.
+:::
