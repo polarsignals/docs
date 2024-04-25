@@ -75,6 +75,7 @@ const sidebars = {
         "filter-by-function",
         "graph-tooltip-details",
         "single-sign-on",
+        "user-roles",
       ],
     },
     {
