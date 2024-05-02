@@ -36,6 +36,10 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: polarsignals
+  labels:
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/warn: privileged
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -79,6 +83,10 @@ subjects:
   name: polarsignals-scraper
   namespace: polarsignals
 ---
+kind: ConfigMap
+metadata:
+  name: polarsignals-scraper-config
+  namespace: polarsignals
 apiVersion: v1
 data:
   polarsignals-scraper.yaml: |-
@@ -105,11 +113,6 @@ data:
       - source_labels: [__meta_kubernetes_pod_container_name]
         action: replace
         target_label: container
-
-kind: ConfigMap
-metadata:
-  name: polarsignals-scraper-config
-  namespace: polarsignals
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -143,7 +146,7 @@ spec:
         - /parca
         - --config-path=/var/polarsignals-scraper/polarsignals-scraper.yaml
         - --store-address=grpc.polarsignals.com:443
-        - --bearer-token-file=/etc/parca-scraper/token
+        - --bearer-token-file=/var/polarsignals-secret/token
         - --mode=scraper-only
         image: ghcr.io/parca-dev/parca:v0.20.0
         livenessProbe:
@@ -170,9 +173,9 @@ spec:
         - mountPath: /tmp
           name: tmp
         - mountPath: /var/polarsignals-scraper
-          name: poularsignals-scraper-config
-        - mountPath: /etc/parca-scraper
-          name: polarsignals-agent
+          name: polarsignals-scraper-config
+        - mountPath: /var/polarsignals-secret
+          name: token
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: polarsignals-scraper
@@ -185,11 +188,8 @@ spec:
       - emptyDir: {}
         name: tmp
       - configMap:
-          name: polarsignals-scraper
-        name: polarsignals-scraper
-      - configMap:
-          name: polarsignals-scraper
-        name: polarsignals-scraper
+          name: polarsignals-scraper-config
+        name: polarsignals-scraper-config
       - secret:
           secretName: polarsignals-agent
         name: token
@@ -202,7 +202,7 @@ metadata:
     app.kubernetes.io/instance: polarsignals-scraper
     app.kubernetes.io/name: polarsignals-scraper
   name: polarsignals-scraper
-  namespace: polarsignals-scraper
+  namespace: polarsignals
 ```
 
 </div>
