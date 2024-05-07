@@ -1,6 +1,6 @@
 # .NET Support
 
-In order for the Polar Signals Agent to be able to profile .NET code, the `DOTNET_PerfMapEnabled=1` environment variable needs to be set.
+In order for the Polar Signals Agent to be able to profile .NET code, the `DOTNET_PerfMapEnabled=3` and `DOTNET_EnableWriteXorExecute=0` environment variables need to be set.
 
 ## Troubleshooting
 
@@ -8,7 +8,7 @@ Below are some situations and how to troubleshoot them. If you've tried these an
 
 ### All I can see is memory addresses
 
-First make sure the .NET process is started with the `DOTNET_PerfMapEnabled=1` environment variable set.
+First, make sure the .NET process is started with the `DOTNET_PerfMapEnabled=3` and `DOTNET_EnableWriteXorExecute=0` environment variables set.
 
 Then check that the process is successfully writing a perfmap. By default, perfmaps are written to `/tmp/perf-<PID>.map`.
 
