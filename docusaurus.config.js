@@ -137,6 +137,8 @@ const config = {
         apiKey: 'a2796eeece1c80a81df8cdf7834de128',
 
         indexName: 'polarsignals',
+
+        contextualSearch: false,
       },
     }),
 };
