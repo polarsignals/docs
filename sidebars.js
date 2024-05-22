@@ -76,6 +76,7 @@ const sidebars = {
         "graph-tooltip-details",
         "single-sign-on",
         "user-roles",
+        "inverted-call-stacks",
       ],
     },
     {
