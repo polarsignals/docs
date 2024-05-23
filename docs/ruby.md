@@ -1,11 +1,5 @@
 # Ruby Support
 
-:::note
-Ruby profiling is currently in beta. There are some known CPU spikes in the agent that can occur when enabling Ruby profiling, once those are fixes Ruby support will no longer be in beta. The CPU spikes are not fatal, but we have a high bar for features we enable by default.
-:::
-
-To enable profiling Ruby code enable the `--enable-ruby-unwinding` flag.
-
 :::info
 In order to profile Ruby code you must have an interpreter with **symbols**.
 :::
