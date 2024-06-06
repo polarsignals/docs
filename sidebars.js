@@ -73,6 +73,7 @@ const sidebars = {
       items: [
         "views",
         "filter-by-function",
+        "binary-filtering",
         "graph-tooltip-details",
         "single-sign-on",
         "user-roles",
