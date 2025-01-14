@@ -98,3 +98,5 @@ The relabeling config can be passed to the agent via the `--config-path` flag.
 | **Label**         | **Description** |
 |-------------------|-----------------|
 | **__meta_cpuid**  | The CPUID the sample was taken on. |
+
+Please see the [Prometheus relabeling](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) documentation for more details about the fields.
