@@ -10,7 +10,7 @@ export const InstallParcaDebuginfo = () => {
       <WithVersions language="bash">
         { versions =>
           <CodeBlock className="language-bash">
-            curl -sL https://github.com/parca-dev/parca-debuginfo/releases/download/{versions.debuginfo_cli}/parca-debuginfo_{versions.debuginfo_cli.substring(1)}_`uname -s`_`uname -m`.tar.gz {'>'} parca-debuginfo_{versions.debuginfo_cli.substring(1)}_`uname -s`_`uname -m`.tar.gz
+            wget https://github.com/parca-dev/parca-debuginfo/releases/download/{versions.debuginfo_cli}/parca-debuginfo_{versions.debuginfo_cli.substring(1)}_`uname -s`_`uname -m`
           </CodeBlock>
         }
       </WithVersions>
@@ -25,21 +25,25 @@ export const InstallParcaDebuginfo = () => {
         }
       </WithVersions>
 
-      <p>And unpack it:</p>
+      <p>Make it executable:</p>
 
       <WithVersions language="bash">
         { versions =>
           <CodeBlock className="language-bash">
-            tar -xzf parca-debuginfo_{versions.debuginfo_cli.substring(1)}_`uname -s`_`uname -m`.tar.gz parca-debuginfo
+            chmod +x parca-debuginfo_{versions.debuginfo_cli.substring(1)}_`uname -s`_`uname -m`
           </CodeBlock>
         }
       </WithVersions>
       
       <p>If you want to move the CLI to a path in your `$PATH` you can move the binary (adjust to your preferred location):</p>
       
-      <CodeBlock className="language-bash">
-      mv parca-debuginfo /usr/local/bin/parca-debuginfo
-      </CodeBlock>
+      <WithVersions language="bash">
+        { versions =>
+          <CodeBlock className="language-bash">
+            sudo mv parca-debuginfo_{versions.debuginfo_cli.substring(1)}_`uname -s`_`uname -m` /usr/local/bin/parca-debuginfo
+          </CodeBlock>
+        }
+      </WithVersions>
     </>
   )
 }
