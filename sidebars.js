@@ -46,6 +46,7 @@ const sidebars = {
         "what-is-continuous-profiling",
         "profiling-101",
         "organizations-and-projects",
+        "labels",
       ],
     },
     {
