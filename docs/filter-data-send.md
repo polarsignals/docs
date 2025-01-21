@@ -2,6 +2,9 @@
 
 While Polar Signals strongly recommends sending all data infrastructure wide, there can be cases where it might make sense to selectively send data.
 
+:::info Note that filtering data as described here, only filters the sample data, it does not affect the automatic upload functionality of debuginfos. If automatic uploads are not desired, they can be turned off using the `--debuginfo-upload-disable` flag.
+:::
+
 ## Configuration
 
 The Polar Signals Agent supports [Prometheus `relabel_config`s](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) to select data to be sent or not. Specifically any label-set that ends up empty after relabeling will be dropped, and the `keep` or `drop` action are short-hands for that.
