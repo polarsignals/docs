@@ -2,7 +2,7 @@
 
 While Polar Signals strongly recommends sending all data infrastructure wide, there can be cases where it might make sense to selectively send data.
 
-:::info Note that filtering data as described here, only filters the sample data, it does not affect the automatic upload functionality. If automatic uploads are not desired, they can be turned off using the `--debuginfo-upload-disable` flag.
+:::info Note that filtering data as described here, only filters the sample data, it does not affect the automatic upload functionality of debuginfos. If automatic uploads are not desired, they can be turned off using the `--debuginfo-upload-disable` flag.
 :::
 
 ## Configuration
