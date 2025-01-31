@@ -88,6 +88,7 @@ const sidebars = {
         "setup-collection-kubernetes",
         "setup-collection-docker",
         "setup-collection-snaps",
+        "setup-collection-ecs",
         "invite-users",
         "generating-tokens",
         "uploading-debuginfos",
