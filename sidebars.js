@@ -86,6 +86,7 @@ const sidebars = {
       label: "Tutorial",
       items: [
         "setup-collection-kubernetes",
+        "setup-collection-kubernetes-gpu",
         "setup-collection-docker",
         "setup-collection-snaps",
         "setup-collection-ecs",
