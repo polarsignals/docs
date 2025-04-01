@@ -86,7 +86,6 @@ const sidebars = {
       label: "Tutorial",
       items: [
         "setup-collection-kubernetes",
-        "setup-collection-kubernetes-gpu",
         "setup-collection-docker",
         "setup-collection-snaps",
         "setup-collection-ecs",
@@ -97,6 +96,7 @@ const sidebars = {
         "upload-source",
         "install-parca-debuginfo",
         "install-parca-push",
+        "setup-collection-kubernetes-gpu",
         "setup-scraper",
         "filter-data-send",
       ],
