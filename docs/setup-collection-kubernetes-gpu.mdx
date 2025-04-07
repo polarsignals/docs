@@ -1,0 +1,132 @@
+import KubernetesManifests from '@site/src/components/KubernetesManifests';
+
+# Setup Continuous Profiling for GPUs using Kubernetes
+
+## Prerequisites:
+
+- Kubernetes Cluster.
+- Kubernetes Nodes are running Linux 5.4 or newer.
+- A NVIDIA GPU
+
+### Get an API token
+
+To be able to send any data to Polar Signals Cloud, we're going to need an API token for the
+collection mechanism to authenticate with the Polar Signals API.
+
+Please refer to the [Generating Tokens](/docs/generating-tokens) documentation that has more details.
+
+### Instructions
+
+The Kubernetes manifest below, will deploy the Polar Signals Agent and [Polar Signals GPU Metrics Agent](https://github.com/polarsignals/gpu-metrics-agent/) as DaemonSet to a Kubernetes cluster. 
+Here's what it does in summary:
+
+1. Creates a namespace called `polarsignals` to deploy the agent into.
+2. Creates a secret containing the Polarsignals API token (which you should have created above) for authentication.
+3. Defines a ClusterRole and ClusterRoleBinding to grant the agent permissions to list pods and get node info across the cluster.
+4. Deploys the agent and gpu-metrics-agent as a DaemonSet. This will deploy two pod to each nodes in the cluster. The agent container runs with some privileged settings to enable profiling via eBPF.
+
+The agent will then profile all applications running on the nodes and send the profiling data to the Polar Signals Cloud for queries and analysis.
+
+Make sure to paste in your generated API token and then copy the manifest below into a file called `polarsignals-agent.yaml`, then apply it to your Kubernetes cluster using the command below.
+
+[//]: # (TODO: Remove this in favor of https://api.polarsignals.com/api/manifests.yaml?)
+
+#### Polar Signals Agent
+
+```bash
+kubectl apply -f polarsignals-agent.yaml
+```
+
+You can also use the command below to apply the manifest directly from the Polar Signals API.
+
+```bash
+kubectl apply -f "https://api.polarsignals.com/api/manifests.yaml?token=<your-token>"
+```
+
+<div style={{
+   maxHeight: '500px',
+   overflow: 'scroll',
+   marginBottom: '20px'
+}}>
+    <KubernetesManifests />
+</div>
+
+#### Polar Signals GPU Metrics Agent
+
+Additionally, going to deploy the gpu-metrics-agent.
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: gpu-metrics-agent
+  namespace: polarsignals
+  labels:
+    app: gpu-metrics-agent
+spec:
+  selector:
+    matchLabels:
+      app: gpu-metrics-agent
+  template:
+    metadata:
+      labels:
+        app: gpu-metrics-agent
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: cloud.google.com/gke-gpu # Change this if you're not on GKE
+                    operator: In
+                    values:
+                    - 'true'
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Equal
+          value: "present"
+          effect: NoSchedule
+      containers:
+        - name: gpu-metrics-agent
+          image: ghcr.io/polarsignals/gpu-metrics-agent:main-e8d881f
+          command:
+            - /gpu-metrics-agent
+            - --log-level=debug
+            - --metrics-producer-nvidia-gpu
+            - --collection-interval=2s
+            - --node=$(NODE_NAME)
+            - --remote-store-address=grpc.polarsignals.com:443
+            - --remote-store-bearer-token-file=/etc/gpu-metrics-server/token
+            - --remote-store-insecure-skip-verify
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: LD_LIBRARY_PATH
+              value: /usr/local/nvidia/lib64
+          resources:
+            requests:
+              memory: 32Mi
+              cpu: 10m
+            limits:
+              memory: 128Mi
+              cpu: 100m
+          securityContext:
+            readOnlyRootFilesystem: true
+            privileged: true
+          volumeMounts:
+            - mountPath: /usr/local
+              name: kubernetes-bin
+            - mountPath: /etc/gpu-metrics-server
+              name: token
+              readOnly: false
+      volumes:
+      - name: token
+        secret:
+         secretName: polarsignals-agent
+      - hostPath:
+          path: /home/kubernetes/bin
+          type: Directory
+        name: kubernetes-bin
+```

@@ -1,0 +1,141 @@
+import WithVersions from '@site/src/components/WithVersions';
+import CodeBlock from '@theme/CodeBlock';
+
+# Setup collection on ECS
+
+To set up the Polar Signals agent on AWS ECS an ECS task definition needs to be created. Below is an example of a task definition, keep in mind a few things about this task:
+
+1. Create a secret that contains the Polar Signals authentication token. In the example below it is injected into the container using [AWS SSM](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-taskdefinition-secret.html#aws-properties-ecs-taskdefinition-secret-properties), and passed to the agent via the `PARCA_BEARER_TOKEN` environment variable.
+2. Each of the mount points are important, they cannot be removed, each of them serve an important purpose.
+3. It is crucial that the `pidMode` is "host", otherwise the agent cannot perform its functionality.
+
+<WithVersions language="json">
+  { versions =>
+    <CodeBlock className="language-json">
+{`{
+    "containerDefinitions": [
+        {
+            "name": "parca-agent",
+            "image": "ghcr.io/parca-dev/parca-agent:{versions.agent}",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 7071,
+                    "hostPort": 7071,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": false,
+            "command": [
+                "--remote-store-address=grpc.polarsignals.com:443",
+            ],
+            "environment": [],
+            "mountPoints": [
+                {
+                    "sourceVolume": "sys-fs-bpf",
+                    "containerPath": "/sys/fs/bpf"
+                },
+                {
+                    "sourceVolume": "run",
+                    "containerPath": "/run"
+                },
+                {
+                    "sourceVolume": "boot",
+                    "containerPath": "/boot"
+                },
+                {
+                    "sourceVolume": "lib-modules",
+                    "containerPath": "/lib/modules"
+                },
+                {
+                    "sourceVolume": "sys-kernel-debug",
+                    "containerPath": "/sys/kernel/debug"
+                },
+                {
+                    "sourceVolume": "sys-fs-cgroup",
+                    "containerPath": "/sys/fs/cgroup"
+                },
+                {
+                    "sourceVolume": "var-run-dbus",
+                    "containerPath": "/var/run/dbus/system_bus_socket"
+                }
+            ],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "PARCA_BEARER_TOKEN",
+                    "valueFrom": "SSM_ARN"
+                }
+            ],
+            "privileged": true,
+            "systemControls": []
+        }
+    ],
+    "family": "family_name",
+    "taskRoleArn": "arn:aws:iam::ACCOUNT:role/ECSTASKROLE",
+    "executionRoleArn": "arn:aws:iam::ACCOUNT:role/ECSEXECUTIONROLE",
+    "networkMode": "awsvpc",
+    "volumes": [
+        {
+            "name": "docker_sock",
+            "host": {
+                "sourcePath": "/var/run/docker.sock"
+            }
+        },
+        {
+            "name": "boot",
+            "host": {
+                "sourcePath": "/boot"
+            }
+        },
+        {
+            "name": "run",
+            "host": {
+                "sourcePath": "/run"
+            }
+        },
+        {
+            "name": "lib-modules",
+            "host": {
+                "sourcePath": "/lib/modules"
+            }
+        },
+        {
+            "name": "sys-fs-bpf",
+            "host": {
+                "sourcePath": "/sys/fs/bpf"
+            }
+        },
+        {
+            "name": "sys-kernel-debug",
+            "host": {
+                "sourcePath": "/sys/kernel/debug"
+            }
+        },
+        {
+            "name": "sys-fs-cgroup",
+            "host": {
+                "sourcePath": "/sys/fs/cgroup"
+            }
+        },
+        {
+            "name": "var-run-dbus",
+            "host": {
+                "sourcePath": "/var/run/dbus/system_bus_socket"
+            }
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ],
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "256",
+    "memory": "1024",
+    "pidMode": "host"
+}`}
+    </CodeBlock>
+  }
+</WithVersions>

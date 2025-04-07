@@ -1,7 +1,5 @@
 # Labels
 
-### **Documentation Description**
-
 This page provides a comprehensive reference for all labels supported by the Parca Agent, categorized for easy navigation. The labels include essential system, process, thread, Kubernetes, container, and agent metadata attached to profiling data. 
 These labels can be used as-is or customized through [Prometheus relabeling](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) to enhance profiling insights and debugging efficiency.
 The relabeling config can be passed to the agent via the `--config-path` flag. 
@@ -98,5 +96,3 @@ The relabeling config can be passed to the agent via the `--config-path` flag.
 | **Label**         | **Description** |
 |-------------------|-----------------|
 | **__meta_cpuid**  | The CPUID the sample was taken on. |
-
-Please see the [Prometheus relabeling](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) documentation for more details about the fields.
