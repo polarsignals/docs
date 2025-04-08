@@ -2,7 +2,7 @@
 
 The Polar Signals Agent can profile any Rust binary by default and doesn't need any special compilation flags for collection.
 
-It uses the `.eh_frame` section in ELF binaries to perform unwinding of stacks.
+It uses the `.eh_frame` section in ELF binaries to perform unwinding of stacks, which are always present in all Rust binaries, so nothing special needs to be done to make unwinding work.
 
 ## Symbolization
 
