@@ -95,4 +95,4 @@ The relabeling config can be passed to the agent via the `--config-path` flag.
 ### **CPU-Related Labels**
 | **Label**         | **Description** |
 |-------------------|-----------------|
-| **__meta_cpuid**  | The CPUID the sample was taken on. |
+| **__meta_cpu**  | The CPU the sample was taken on. |
