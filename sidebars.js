@@ -26,8 +26,18 @@ const sidebars = {
     },
     {
       type: "doc",
+      label: "Quick Start Guide",
+      id: "quick-start-guide",
+    },
+    {
+      type: "doc",
       label: "Why Polar Signals?",
       id: "why-polar-signals",
+    },
+     {
+      type: "doc",
+      label: "Agent Deployment Guide",
+      id: "agent-deployment-guide",
     },
     {
       type: "doc",
