@@ -8,7 +8,7 @@ Polar Signals provides a cloud platform for continuous profiling, helping teams 
 
 <BrowserWindow>
 
-![Graph Tooltip](../static/img/Polar_Signals_diagram.png)
+![PS architectural diagram](../static/img/Polar_Signals_diagram.png)
 
 </BrowserWindow>
 
