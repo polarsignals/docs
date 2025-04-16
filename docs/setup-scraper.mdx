@@ -50,7 +50,6 @@ metadata:
     app.kubernetes.io/instance: polarsignals-scraper
     app.kubernetes.io/name: polarsignals-scraper
   name: polarsignals-scraper
-  namespace: polarsignals
 rules:
 - apiGroups:
   - ""
@@ -74,7 +73,6 @@ metadata:
     app.kubernetes.io/instance: polarsignals-scraper
     app.kubernetes.io/name: polarsignals-scraper
   name: polarsignals-scraper
-  namespace: polarsignals
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
