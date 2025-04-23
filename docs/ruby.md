@@ -1,21 +1,10 @@
 # Ruby Support
 
-:::info
-In order to profile Ruby code you must have an interpreter with **symbols**.
-:::
+Ruby is supported out of the box without users having to modify their containers, code, SDKs or anything else. Just deploy the Polar Signals Agent and you're done.
 
-You can check if your Ruby interpreter has symbols by running the following command:
+## Troubleshooting
 
-```shell
-$ nm /path/to/ruby | grep ruby_init
-❯ 0000000000000000 T ruby_init
-```
-
-If you see `ruby_init` then your Ruby interpreter has symbols and you can enable Ruby profiling.
-
-:::tip
-Sometimes the Ruby interpreter is dynamically linked as a shared library that has symbols, in that case you can check the shared library for symbols:
-:::
+The agent determines whether a process is a ruby process by checking if there is a dynamically linked library, that contains `libruby`.
 
 ```shell
 $ ldd /path/to/ruby
@@ -28,9 +17,6 @@ $ ldd /path/to/ruby
 	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f718484a000)
 	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f718482a000)
 	/lib64/ld-linux-x86-64.so.2 (0x00007f7185236000)
-
-$ nm /path/to/libruby.so.3.2 | grep ruby_current_vm
-❯ 0000000000a0b0c0 D ruby_current_vm
 ```
 
-If you have `ruby_current_vm` or `ruby_current_vm_ptr` then your Ruby interpreter has symbols and you can enable Ruby profiling.
+If a process has been identified as a Ruby process, the agent logs if it fails to detect the version, or any other information it requires for successfully profiling it. Check the logs once you've verified that the process dynamically links a `libruby` object.
