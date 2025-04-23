@@ -1,21 +1,10 @@
 # Python Support
 
-:::info
-In order to profile Python code you must have an interpreter with **symbols**.
-:::
+Python is supported out of the box without users having to modify their containers, code, SDKs or anything else. Just deploy the Polar Signals Agent and you're done.
 
-You can check if your Python interpreter has symbols by running the following command:
+## Troubleshooting
 
-```shell
-$ nm /path/to/python | grep Py_BytesMain
-❯  U Py_BytesMain
-```
-
-If you see `Py_BytesMain` then your Python interpreter has symbols and you can enable Python profiling.
-
-:::tip
-Sometimes the Python interpreter is dynamically linked as a shared library that has symbols, in that case you can check the shared library for symbols:
-:::
+The agent determines whether a process is a Python process by checking if the main binary starts with `python` or if there is a dynamically linked library, that contains `libpython`.
 
 ```shell
 $ ldd /path/to/python
@@ -24,22 +13,6 @@ $ ldd /path/to/python
 	libm.so.6 => /usr/lib/libm.so.6 (0x00007f2bf8713000)
 	libc.so.6 => /usr/lib/libc.so.6 (0x00007f2bf8531000)
 	/lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007f2bf8e68000)
-
-$ nm /path/to/libpython.so | grep PyRuntime
-❯   0000000000557d20 D _PyRuntime
-    0000000000297290 T _PyRuntime_Finalize
-    0000000000297220 T _PyRuntime_Initialize
-    000000000029a7a0 T _PyRuntimeState_Fini
-    000000000029a600 T _PyRuntimeState_Init
-    000000000029a840 t _PyRuntimeState_ReInitThreads
 ```
 
-If you have `_PyRuntime` then your Python interpreter has symbols and you can enable Python profiling.
-
-Lastly, [the official Python Docker `-slim` images](https://hub.docker.com/_/python) do not have symbols because of space constraints, but you can copy the symbols from the "full" image into the "slim" image:
-
-```dockerfile
-FROM python:3.11 as debuginfo
-FROM python:3.11-slim
-COPY --from=debuginfo /usr/local/lib/libpython3.11.so.1.0 /usr/local/lib/libpython3.11.so.1.0
-```
+If a process has been identified as a Python process, the agent logs if it fails to detect the version, or any other information it requires for successfully profiling it. Check the logs once you've verified that the main binary either starts with `python` or it dynamically links a `libpython` object.
