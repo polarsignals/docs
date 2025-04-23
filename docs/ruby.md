@@ -2,6 +2,10 @@
 
 Ruby is supported out of the box without users having to modify their containers, code, SDKs or anything else. Just deploy the Polar Signals Agent and you're done.
 
+## Supported Versions
+
+2.5.0 - 3.2.x
+
 ## Troubleshooting
 
 The agent determines whether a process is a ruby process by checking if there is a dynamically linked library, that contains `libruby`.
