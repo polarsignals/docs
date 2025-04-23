@@ -25,8 +25,6 @@ Language Support:
 1. [Java/Clojure/Kotlin/JVM](/docs/jvm)
 1. [Graal Native](/docs/graal-native)
 1. [Node.js](/docs/nodejs)
-1. [Erlang](/docs/erlang)
-1. [Julia](/docs/julia)
 1. [.NET](/docs/dotnet)
 
 Setup Collection:
