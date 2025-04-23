@@ -2,6 +2,10 @@
 
 Python is supported out of the box without users having to modify their containers, code, SDKs or anything else. Just deploy the Polar Signals Agent and you're done.
 
+## Supported Versions
+
+3.6.0 - 3.12.x
+
 ## Troubleshooting
 
 The agent determines whether a process is a Python process by checking if the main binary starts with `python` or if there is a dynamically linked library, that contains `libpython`.
