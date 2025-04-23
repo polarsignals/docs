@@ -4,7 +4,6 @@ The important parts to allow the Polar Signals Agent to profile Graal Native bin
 
 * Generate debuginfo with `-g`
 * Not remove all local symbols with `-H:-DeleteLocalSymbols`
-* Preserve the frame pointer with `-H:+PreserveFramePointer`
 * More detailed symbols with `-H:+SourceLevelDebug`
 
 How to specify these flags to be used depends on the specific build tooling used to build your Graal Native binary.
@@ -14,7 +13,7 @@ How to specify these flags to be used depends on the specific build tooling used
 Using Quarkus the flags are be specified using the `application.properties` file:
 
 ```
-quarkus.native.additional-build-args=-H:-DeleteLocalSymbols, -H:+PreserveFramePointer, -H:+SourceLevelDebug, -g
+quarkus.native.additional-build-args=-H:-DeleteLocalSymbols, -H:+SourceLevelDebug, -g
 ```
 
 ## Gradle
@@ -57,7 +56,6 @@ graalvmNative {
     main {
       buildArgs.addAll([
         '-H:-DeleteLocalSymbols',             // Do not use linker option to remove all local symbols from image
-        '-H:+PreserveFramePointer',           // Saves stack base pointer on the stack on method entry
         '-H:+SourceLevelDebug',               // Preserve the local variable information for every Java source line
         '-g',                                 // Generate debugging information
         '-H:+StaticExecutableWithDynamicLibC' // Build a static binary except for libc
