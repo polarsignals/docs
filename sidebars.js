@@ -68,8 +68,6 @@ const sidebars = {
         "cpp",
         "rust",
         "go",
-        "erlang",
-        "julia",
         "dotnet",
         "python",
         "ruby",
