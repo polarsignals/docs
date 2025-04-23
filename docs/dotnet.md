@@ -1,32 +1,13 @@
 # .NET Support
 
-In order for the Polar Signals Agent to be able to profile .NET code, the `DOTNET_PerfMapEnabled=3` and `DOTNET_EnableWriteXorExecute=0` environment variables need to be set.
+.NET is supported out of the box without users having to modify their containers, code, SDKs or anything else. Just deploy the Polar Signals Agent and you're done.
+
+## Supported Versions
+
+6 - 8.x
 
 ## Troubleshooting
 
-Below are some situations and how to troubleshoot them. If you've tried these and still haven't been able to resolve the issue, please [contact support](/docs/contact-support).
+The agent determines whether a process is a .NET process by checking if the main binary dynamically links an object that is called `libcoreclr.so`.
 
-### All I can see is memory addresses
-
-First, make sure the .NET process is started with the `DOTNET_PerfMapEnabled=3` and `DOTNET_EnableWriteXorExecute=0` environment variables set.
-
-Then check that the process is successfully writing a perfmap. By default, perfmaps are written to `/tmp/perf-<PID>.map`.
-
-On Kubernetes for example this can be checked with:
-
-```bash
-kubectl exec --namespace <namespace-name> <pod-name> -- ls -la /tmp
-```
-
-For example:
-
-```bash
-$ kubectl exec -n default dotnet-demo -- ls -la /tmp
-total 144
-drwxrwxrwt 1 root root   4096 Jul 12 08:59 .
-drwxr-xr-x 1 root root   4096 Jul 12 08:59 ..
--rw-r--r-- 1 root root 131811 Jul 12 08:59 perf-1.map
-```
-
-In this example the file we're looking for is the `perf-1.map`. 
-For you it should be called something similar.
+If a process has been identified as a .NET process, the agent logs if it fails to detect the version, or any other information it requires for successfully profiling it. Check the logs once you've verified that the processes' main binary dynamically links an object that is called `libcoreclr.so`.
