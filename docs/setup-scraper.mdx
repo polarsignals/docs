@@ -218,5 +218,103 @@ A common thing to do is not scrape all containers in a Kubernetes cluster, but o
         action: keep
         regex: my-container
 ```
+## profiling_config
 
-If you ever need help with specific changes to your configuration feel free to [join our Discord server and ask](https://discord.gg/knw3u5X9bs)!
+### Overview
+The profiling_config block is used to control how profiling data is scraped from applications using pprof-compatible HTTP endpoints. While the configuration and defaults originate from Go, the system is language-agnostic as long as the application exposes profiling data on the standard HTTP paths.
+Supported languages include:
+* Go (native net/http/pprof)
+* Python, Rust, and Node.js (custom exporters that expose data on the same paths)
+
+This configurability allows Polar Signals customers to:
+* Limit profiling overhead
+* Collect only the most relevant data
+* Adapt profiling behavior per environment or language
+
+### Basic Structure
+```
+- job_name: your-job-name
+  profiling_config:
+  pprof_config:
+      # configuration options here
+```
+### Default Behavior
+By default, the Polar Signals Parca scraper is configured to collect all standard pprof profiles that are typically exposed by Go applications. These include:
+* Memory profiling via `/debug/pprof/allocs`
+* Block profiling via `/debug/pprof/block`
+* Goroutine profiling via `/debug/pprof/goroutine`
+* Mutex contention profiling via `/debug/pprof/mutex`
+* CPU profiling via `/debug/pprof/profile`
+
+Each of these profiles is enabled by default and uses the corresponding endpoint path. This setup mirrors Go’s standard profiler behavior but works with any language that mimics these endpoints. The CPU profiler is configured to scrape delta values, which is suitable for periodic scraping.
+You can customize or disable any of these default profiles using the `profiling_config` block.
+
+### Supported `pprof_config` Options
+
+1. memory
+Controls how memory profiling data is collected from `/debug/pprof/heap` or `/debug/pprof/allocs`.
+Example:
+```
+memory:
+  keep_sample_type:
+    - type: inuse_space
+      unit: bytes
+```
+Sample Types:
+
+* `inuse_space` (bytes): Memory currently in use
+* `inuse_objects`: Number of live objects
+* `alloc_space`: All bytes ever allocated
+* `alloc_objects`: Number of total allocated objects
+
+2. process_cpu
+Controls scraping from `/debug/pprof/profile`.
+Example:
+```
+process_cpu:
+  enabled: false
+```
+Note: Disable this if you're already using the eBPF-based agent from Polar Signals for CPU profiling.
+
+3. Other Profiles
+Enable/disable additional profiles:
+```
+mutex:
+  enabled: true
+block:
+  enabled: false
+goroutine:
+  enabled: true
+```
+These map to:
+* `/debug/pprof/mutex`
+* `/debug/pprof/block`
+* `/debug/pprof/goroutine`
+
+### Best Practices: 
+* Collect only what’s needed: Reduces overhead and storage.
+* Use in-use memory (inuse_space) over historical allocs.
+* Avoid scraping CPU if using the eBPF agent.
+* Split jobs to customize scrape intervals or profiles per target.
+
+Example Minimal Config
+```
+- job_name: memory-scraper
+  profiling_config:
+    pprof_config:
+      process_cpu:
+        enabled: false
+      memory:
+        keep_sample_type:
+          - type: inuse_space
+            unit: bytes
+```
+
+### Summary
+* `profiling_config` is flexible and works with any language that serves compatible endpoints.
+* Defaults come from Go, but this can be adapted freely.
+* Review the Parca repo for up-to-date defaults and implementation details.
+
+### Need Help?
+Share your configuration with Polar Signals team and we’ll help you optimize for observability, performance, and scale.
+Feel free to [join our Discord server and ask](https://discord.gg/knw3u5X9bs)!
