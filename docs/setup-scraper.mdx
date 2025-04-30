@@ -235,7 +235,7 @@ This configurability allows Polar Signals customers to:
 ```
 - job_name: your-job-name
   profiling_config:
-     pprof_config:
+    pprof_config:
       # configuration options here
 ```
 ### Default Behavior
@@ -297,7 +297,7 @@ You can also scrape non-pprof custom profiles such as fgprof, a sampling Go prof
 
 Example:
 ```
-custom:
+pprof_config:
   fgprof:
     enabled: true
     path: /debug/fgprof
