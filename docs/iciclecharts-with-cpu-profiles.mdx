@@ -6,13 +6,14 @@ Screenshot of Iciclechart with CPU profiling data:
 ![Iciclechart with CPU profiling data](/img/vizualisation/iciclechart-example.png)
 
 ## Prerequisite
-Before you can use Iciclechart with CPU profiling data, you need to be collecting the CPU profiling data with `cpu` or `thread_id` labels. You can do with by adding the following section to the parca agent configuration if you don't have it already:
+Before you can use Iciclechart with CPU profiling data, you need to be collecting the CPU profiling data with `cpu` or `thread_id` label, or any other label that will never have samples with overlapping timestamps, threads or CPUs can't have two things running on them at the same time so they are well suited for this purpose.
+
+You can do with by adding the following section to the parca agent configuration if you don't have it already:
 ```yaml
   relabel_configs:
     - source_labels: [__meta_thread_id]
       target_label: thread_id
-    - source_labels:
-      - __meta_cpu
+    - source_labels: [__meta_cpu]
       target_label: cpu
 ```
 This will add the `cpu` and `thread_id` labels to the CPU profiling data, which can be then used for Iciclechart visualization. More information about the relabeling can be found in the [relabeling documentation](https://www.parca.dev/docs/parca-agent-labelling#configuration).
