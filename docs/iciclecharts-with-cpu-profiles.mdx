@@ -1,0 +1,31 @@
+# Iciclecharts with CPU profiling data
+
+Iciclechart is a visualization method that allows you to see the CPU usage of your application over time. In other words, it is similar to a flamegraph, but has an additonal time dimension. This means that you can see how the CPU usage of your application changes over time, and how it is affected by different events.
+
+Screenshot of Iciclechart with CPU profiling data:
+![Iciclechart with CPU profiling data](/img/vizualisation/iciclechart-example.png)
+
+## Prerequisite
+Before you can use Iciclechart with CPU profiling data, you need to be collecting the CPU profiling data with `cpu` or `thread_id` labels. You can do with by adding the following section to the parca agent configuration if you don't have it already:
+```yaml
+  relabel_configs:
+    - source_labels: [__meta_thread_id]
+      target_label: thread_id
+    - source_labels:
+      - __meta_cpu
+      target_label: cpu
+```
+This will add the `cpu` and `thread_id` labels to the CPU profiling data, which can be then used for Iciclechart visualization. More information about the relabeling can be found in the [relabeling documentation](https://www.parca.dev/docs/parca-agent-labelling#configuration).
+
+## How to use Iciclechart with CPU profiling data
+Once you're on the Polar Signals cloud, you can use Iciclechart by selecting the `Iciclechart` option in the visualization type dropdown.
+![Iciclechart with CPU profiling data](/img/vizualisation/iciclechart-selector.png)
+
+:::info
+Note: Since the Iciclechart is right now in alpha, you will have to specifically enable Iciclecharts in the `Preferences` section. you can do this by clicking on the `Preferences` button near the visualization type selector and then toggling the `Enable Icicle charts` on.
+:::
+
+## Recommended Usage
+It is always recommended to use iciclechart with the following query conditions:
+- Add a `node` filter to the query to limit the data to a specific node.
+- Add either `cpu` or `thread_id` label to the `Sum by` section to group the data by CPU or thread ID.
