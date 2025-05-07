@@ -8,7 +8,7 @@ Screenshot of Iciclechart with CPU profiling data:
 ## Prerequisite
 Before you can use Iciclechart with CPU profiling data, you need to be collecting the CPU profiling data with `cpu` or `thread_id` label, or any other label that will never have samples with overlapping timestamps, threads or CPUs can't have two things running on them at the same time so they are well suited for this purpose.
 
-You can do with by adding the following section to the parca agent configuration if you don't have it already:
+You can do that by adding the following section to the parca agent configuration if you don't have it already:
 ```yaml
   relabel_configs:
     - source_labels: [__meta_thread_id]
