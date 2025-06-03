@@ -29,5 +29,5 @@ If a parent function’s cumulative time is larger than the sum of its children�
 
 <br />
 
-Understanding these metrics helps you pinpoint where CPU time is really going—whether a function is expensive on its own or just passing the cost down to its children.
+Understanding these metrics helps you pinpoint where CPU time is really going, whether a function is expensive on its own or just passing the cost down to its children.
 
