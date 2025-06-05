@@ -57,7 +57,6 @@ const sidebars = {
         "profiling-101",
         "organizations-and-projects",
         "labels",
-        "cumulative-vs-flat",
       ],
     },
     {
