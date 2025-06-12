@@ -71,6 +71,7 @@ Security is foundational to everything we build. Polar Signals is:
 - SOC 2 Type II Compliant
 - Encrypted in transit and at rest
 - Equipped with role-based access controls, and strict permission boundaries
+- Undergoing yearly third-party penetration tests
   
 These safeguards apply to all data types, including profiling data, to help you operate with confidence and control.
 
