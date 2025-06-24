@@ -34,7 +34,6 @@ Running the Polar Signals Agent using docker can be done easily with this comman
       &nbsp;&nbsp;-v /sys/fs/cgroup:/sys/fs/cgroup \<br />
       &nbsp;&nbsp;-v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket \<br />
       &nbsp;&nbsp;ghcr.io/parca-dev/parca-agent:{versions.agent} \<br />
-      &nbsp;&nbsp;/bin/parca-agent \<br />
       &nbsp;&nbsp;--remote-store-address=grpc.polarsignals.com:443 \<br />
       &nbsp;&nbsp;--remote-store-bearer-token=&lt;your-token&gt;
     </CodeBlock>
