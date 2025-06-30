@@ -4,15 +4,30 @@ The Polar Signals Profiler is an advanced tool designed for capturing profiling 
 
 ## 1. Nature of Profiling Data
 
+At Polar Signals, we specialize in continuous profiling, a distinct category within the observability stack. To understand the sensitivity of profiling data, it's important to distinguish it from other observability signals. Profiles reveal how code executes in production, highlighting which functions are hot, where time is spent, and how memory is allocated.
+
+Unlike logs or traces, profiling data is **not designed to capture user-level or request-specific information**. Unless specifically instructed and instrumented to do so, it does not contain:
+
+- Personally Identifiable Information (PII)
+- Request payloads or session data
+- Tokens, secrets, or credentials
+
+Instead, profiling focuses on system behavior over time, helping teams optimize performance without exposing sensitive user information.
+
 - **Metadata About Code:** The Polar Signals Profiler primarily collects metadata about your code.
   
   - It does **not** access or store:
     - Executable code
     - Source code
 
-  - Explicit Opt-In Required: Access to certain features like the [source code viewer](https://www.polarsignals.com/docs/upload-source) or upcoming assembly viewer require explicit user consent. 
-
   - Metadata to translate memory addresses is extracted from binaries, and executable sections are zero'ed.
+ 
+### A Note on the "View Source File" Feature
+Polar Signals offers an optional "View Source File" capability, enabling teams to upload source code for deeper profiling insights, such as highlighting the exact line of code causing performance bottlenecks.
+- This feature is strictly opt-in.
+- Uploaded code is **not processed** beyond its role in enhancing profile views.
+- We recommend reviewing internal data governance policies before enabling this feature to ensure alignment with your IP or source code handling policies.
+
 
 ## 2. Memory Content Security
 
@@ -49,6 +64,16 @@ Using the Polar Signals agent involves communication with the Polar Signals Clou
 
 * `grpc.polarsignals.com` (IP: 35.234.93.182, port: 443) for the gRPC push APIs, which upload the profiling data.
 * `api.polarsignals.com` (IP: 35.234.93.182, port: 443) for signed uploads of symbols of binaries.
+
+## Our Security Commitments
+Security is foundational to everything we build. Polar Signals is:
+
+- SOC 2 Type II Compliant
+- Encrypted in transit and at rest
+- Equipped with role-based access controls, and strict permission boundaries
+- Undergoing yearly third-party penetration tests
+  
+These safeguards apply to all data types, including profiling data, to help you operate with confidence and control.
 
 ## Disclosure
 
