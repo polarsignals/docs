@@ -1,0 +1,21 @@
+import WithVersions from '@site/src/components/WithVersions';
+import CodeBlock from '@theme/CodeBlock';
+
+# MCP Support
+
+# Basic syntax
+claude mcp add --transport http <name> <url>
+
+# Example: Adding a streamable HTTP server
+claude mcp add --transport http http-server https://example.com/mcp
+
+# Example: Adding an HTTP server with authentication header
+claude mcp add --transport http secure-server https://api.example.com/mcp --header "Authorization: Bearer your-token"
+
+claude mcp add --transport http polarsignals https://api.polarsignals.com/api/mcp/ --header "Authorization: Bearer eyJhbGciOiJFZERTQSJ9."
+
+claude mcp add --transport http polarsignals http://localhost:30080/api/mcp/ --header "Authorization: Bearer eyJhbGciOiJFZERTQSJ9." 
+
+## Remove the MCP Server again
+claude mcp remove polarsignals 
+
