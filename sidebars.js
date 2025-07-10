@@ -87,7 +87,7 @@ const sidebars = {
         "single-sign-on",
         "user-roles",
         "inverted-call-stacks",
-        "flamecharts-with-cpu-profiles",
+        "flame-charts-with-cpu-profiles",
       ],
     },
     {
