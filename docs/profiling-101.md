@@ -4,13 +4,13 @@ Understand basics of CPU profiling in **5 minutes** ⏱️!
 
 ## Example
 
-This guide will demonstrate CPU profiling using [`Go`](https://golang.org/), but these fundamentals apply to any language. 
+This guide will demonstrate CPU profiling using [`Go`](https://golang.org/), but these fundamentals apply to any language.
 Let's walk through an example of CPU profiling.
 
 ### Capturing data
 
-Take the following example of a [Go](https://golang.org/) program that has a `main` function, 
-that first calls `iterateLong` which calls `iterate` with 9 billion iterations, 
+Take the following example of a [Go](https://golang.org/) program that has a `main` function,
+that first calls `iterateLong` which calls `iterate` with 9 billion iterations,
 and then `iterateShort`, which calls `iterate` with 1 billion iterations.
 
 ```go
@@ -39,7 +39,7 @@ _Note: Save this snippet to `iterate.go` and run it with `time go run iterate.go
 
 When executed this program takes 5 seconds to execute in total (on an AMD Ryzen 5 3400GE CPU).
 With profiling we can understand _what_ was executing during those 5 seconds and for how long.
-For the sake of simplicity, a sampling CPU profiler looks at the "current" stack trace 100x per second 
+For the sake of simplicity, a sampling CPU profiler looks at the "current" stack trace 100x per second
 (the sampling rate is typically configurable, but 100x is both common and easier to calculate with).
 
 ### Data format
@@ -61,16 +61,16 @@ and 90% (450 samples observed out of 500) of the time was spent in the `iterate`
 ### Visualizing
 
 Using this data, a popular way to visualize profiling data is using **flamegraphs**.  
-If they are built with the root at the top: **icicle graphs**.
+If they are built with the root at the top: **Flame Graphs**.
 
-![Profiling 101 Icicle Graph](/img/profiling-101-icicle-graph.png)
+![Profiling 101 Flame Graph](/img/profiling-101-flame-graph.png)
 
 ## Recap
 
 In this guide you have learned the fundamentals of CPU profiling:
 
-1) How data is captured: by observing the executed stack traces 100x per second.
-2) What the raw data looks like: folded stack traces, and the optimized [pprof](https://github.com/google/pprof) format.
-3) Useful ways to visualize data: flame graphs/icicle graphs.
+1. How data is captured: by observing the executed stack traces 100x per second.
+2. What the raw data looks like: folded stack traces, and the optimized [pprof](https://github.com/google/pprof) format.
+3. Useful ways to visualize data: Flame Graphs.
 
 Congrats and happy profiling! 🎉
