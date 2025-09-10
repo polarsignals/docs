@@ -89,6 +89,7 @@ const sidebars = {
         "user-roles",
         "inverted-call-stacks",
         "flame-charts-with-cpu-profiles",
+        "mcp",
       ],
     },
     {

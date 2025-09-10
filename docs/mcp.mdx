@@ -3,19 +3,74 @@ import CodeBlock from '@theme/CodeBlock';
 
 # MCP Support
 
-# Basic syntax
-claude mcp add --transport http <name> <url>
+Polar Signals provides a Model Context Protocol (MCP) server that enables AI assistants to connect directly with performance profiling data sources. This transforms performance analysis by allowing natural language queries about application performance data.
 
-# Example: Adding a streamable HTTP server
-claude mcp add --transport http http-server https://example.com/mcp
+## What is MCP?
 
-# Example: Adding an HTTP server with authentication header
-claude mcp add --transport http secure-server https://api.example.com/mcp --header "Authorization: Bearer your-token"
+The Model Context Protocol enables AI assistants to securely connect to external data sources and tools. With Polar Signals' MCP server, you can:
 
-claude mcp add --transport http polarsignals https://api.polarsignals.com/api/mcp/ --header "Authorization: Bearer eyJhbGciOiJFZERTQSJ9."
+- **Analyze performance data using natural language**: Ask questions like "What are the main CPU bottlenecks?" or "Show memory allocation patterns"
+- **AI-driven code optimization**: Get specific suggestions for improving performance based on profiling data
+- **Explore profiling data**: Discover available profile types, labels, and values in your projects
 
-claude mcp add --transport http polarsignals http://localhost:30080/api/mcp/ --header "Authorization: Bearer eyJhbGciOiJFZERTQSJ9." 
+## Setup
 
-## Remove the MCP Server again
-claude mcp remove polarsignals 
+### 1. Generate an API Token
+
+First, generate an API token in your Polar Signals project settings.
+
+### 2. Add the MCP Server
+
+#### Using Claude Code CLI
+
+Setting up Remote MCP with Polar Signals Cloud is straightforward:
+
+```bash
+claude mcp add --transport http polarsignals https://api.polarsignals.com/api/mcp/ --header "Authorization: Bearer YOUR_TOKEN"
+```
+
+No extra installation is required. Your LLM can directly talk to our Remote MCP.
+
+#### Using Cursor
+
+Add this configuration to your Cursor settings:
+
+<CodeBlock className="language-json">
+{`{
+  "mcpServers": {
+    "polarsignals": {
+      "url": "https://api.polarsignals.com/api/mcp/",
+      "headers": {
+        "Authorization": "Bearer YOUR_TOKEN"
+      }
+    }
+  }
+}`}
+</CodeBlock>
+
+### 3. Remove the MCP Server
+
+```bash
+claude mcp remove polarsignals
+```
+
+## Usage Examples
+
+Once configured, you can ask natural language questions about your profiling data:
+
+- "What are the main CPU bottlenecks in my application?"
+- "Show me memory allocation patterns for the last hour"
+- "Which functions consume the most CPU time?"
+- "Analyze the performance profile and suggest optimizations"
+
+The MCP server will translate your questions into precise profile queries and provide actionable insights for performance optimization. 
+
+## Available Tools
+
+The Polar Signals MCP server provides the following tools:
+
+- `profile_types`: Discover available profile types in your project
+- `labels`: Explore metadata labels in profiles  
+- `values`: Get specific label values for filtering
+- `get_profile`: Query profiles using PromQL syntax
 
