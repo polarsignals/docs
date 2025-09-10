@@ -1,52 +1,185 @@
-# Views Polar Signals 
+# Views
 
 import BrowserWindow from "@site/src/components/BrowserWindow";
 
 The **Views** feature enables you to create custom filters that focus on specific profiling data based on labels or attributes. This provides a structured and efficient way to analyze the data that matters most to you.
-For example, if you want to examine only the data labeled `container="storage"`, you can easily set up a View to filter out irrelevant details and streamline your analysis. Whether you're working with application servers, databases, Kubernetes nodes, or other infrastructure components, Views help you organize and refine your profiling insights with precision.
 
-## How to Create a View
+**Key benefits:**
 
-To create a new View, navigate to your dashboard, hover over your active project, and click the New View button. From there, you can define your filters and tailor the view to your needs.
+- **Reduce noise**: Filter out irrelevant data to focus on what matters.
+- **Save time**: Avoid repetitive filtering by pre-configuring common queries.
+- **Team collaboration**: Share standardized views across your organization.
+- **Targeted analysis**: Create purpose-built views for specific components or environments.
+
+## When to use Views
+
+Views are particularly useful in these scenarios:
+
+- **Multi-service applications**: Create separate views for each microservice or container.
+- **Environment separation**: Maintain distinct views for development, staging, and production.
+- **Team workflows**: Set up views tailored to different team responsibilities.
+- **Incident investigation**: Quickly switch to pre-configured views that isolate problematic components.
+
+## How to create a View
+
+By default, you start with a single global view named "Default View" that encompasses all profiling data. This is useful for an overarching perspective, but as your data grows, creating specific Views becomes essential for targeted analysis.
+
+To create a new View, navigate to your dashboard, at the right end of the **Views** tab, click the New View button. This should open a **Drawer** that appears on the right side of the screen, allowing you to customize its details.
 
 <BrowserWindow>
 
-![Create a new view](../static/img/View1.png)
+![Create a new view](../static/img/views/View1.png)
 
 </BrowserWindow>
 
 <br />
 
-Another way to create a **View** is by entering a label name and value directly into the query browser. Once you've constructed your query, a **"Create a view from this query"** button will appear, allowing you to save it as a View.
+<br />
 
 <BrowserWindow>
 
-![Create a view from query](../static/img/View2.png)
+![View Drawer](../static/img/views/View2.png)
 
 </BrowserWindow>
 
 <br />
 
-Regardless of how you create a **View**, a **Drawer** will appear on the right side of the screen, allowing you to customize its details. Here, you can define the name, description, query, and profile type, along with labels that can be used for filtering. Labels help scope profiling data by fixing specific label names while allowing flexibility in label values. For example, you can define labels such as container and pod to refine your analysis further, ensuring your View captures only the most relevant data. These labels can later be used as filters to narrow down profiling data during analysis.
+### How to pre-filter for label values
+
+When creating a View, you can pre-filter for specific label names and values. This is particularly useful when you want to focus on a specific subset of your profiling data. For example, if you want to analyze data from a specific container, you can set a pre-filter for the `container` label with the value `api`.
+
+To do this, query as you normally would in the **Profiler** to the left, and the label names and values will be available in the **View** creation drawer.
 
 <BrowserWindow>
 
-![View Drawer](../static/img/View3.png)
-
-</BrowserWindow>
-
-At the bottom of the Drawer, you'll find two toggle options:
-
-* **Enforce Profile Type in View** – When enabled, this ensures that the profile type remains fixed within the View, preventing changes while you analyze data.
-* **Disable Explorative Querying** – When enabled, this restricts the use of the free-form query browser, limiting analysis to predefined filters. The labels defined earlier, such as `container` and `pod`, serve as these predefined filters, ensuring analysis stays focused on relevant data points.
-
-<BrowserWindow>
-
-![Disable Explorative Querying Screenshot](../static/img/View4.png)
+![Pre-filter for label values](../static/img/views/prefiltered.png)
 
 </BrowserWindow>
 
 <br />
-These options provide greater control over your analysis, ensuring consistency and focus within your Views.
-After creating a View, you'll be redirected to it, where you can immediately explore the filtered data.
 
+Create the view by clicking the **Create View** button at the bottom of the drawer and you will be redirected to the newly created view and also see the view appear in the **Views** tab list.
+
+<BrowserWindow>
+
+![A view with pre-filtered label values](../static/img/views/prefiltered-created.png)
+
+</BrowserWindow>
+
+<br />
+
+### How to enforce profile type in view
+
+If you'd like to lock in a specific profile type for a view, you can do so by selecting the desired profile type from the **Profile type** dropdown in the **Profiler** and then clicking on the **Enforce profile type in view** toggle in the view creation drawer. This ensures that whenever you access this view, it will always use the selected profile type.
+
+<BrowserWindow>
+
+![Sum-by labels for aggregation](../static/img/views/enforced-profile-type.png)
+
+</BrowserWindow>
+
+<br />
+
+### How to set up sum-by labels for aggregation
+
+When creating a View, you can also specify which labels to sum by for aggregation. This allows you to group your profiling data by specific label names and compute aggregated metrics.
+
+To set up sum-by labels, simply add the desired label names to the **Sum-by labels for aggregation** field in the view creation drawer. You can include multiple labels to create a multi-dimensional aggregation.
+
+<BrowserWindow>
+
+![Sum-by labels for aggregation](../static/img/views/sum-by.png)
+
+</BrowserWindow>
+
+<br />
+
+Now any query made in this view will automatically include the specified sum-by labels for aggregation.
+
+<BrowserWindow>
+
+![A view with sum-by labels for aggregation](../static/img/views/sum-by-created.png)
+
+</BrowserWindow>
+
+<br />
+
+### How to streamline repetitive filtering
+
+If your team always filters by the same labels (service, environment, job, etc.), you can streamline your view by only allowing querying by these labels. This helps to reduce noise and makes it easier to focus on the relevant data.
+
+To streamline repetitive filtering, add the desired label names to the **Streamline repetitive filtering** field in the view creation drawer.
+
+<BrowserWindow>
+
+![Streamlined label names](../static/img/views/streamlined-label-names.png)
+
+</BrowserWindow>
+
+<br />
+
+Now you'll see the specified labels in the Query section of the **Profiler** when you're in this view, and all you have to do is select the values you want to filter by.
+
+<BrowserWindow>
+
+![A view with streamlined label names](../static/img/views/streamlined-label-names-created.png)
+
+</BrowserWindow>
+
+<br />
+
+> _**TIP**: Add a description to your view for your teammates (or yourself) to know what a view is for and when the view name is hovered on, it shows the description._
+
+<BrowserWindow>
+
+![The view description is displayed when the view is hovered on](../static/img/views/streamlined-label-names-hover.png)
+
+</BrowserWindow>
+
+<br />
+
+### How to set up group by labels for aggregation
+
+If you frequently group your profiling data by specific labels, you can set these labels in the **Group by labels** field when creating a view. This ensures that any query made within this view will automatically include these labels for grouping.
+
+To set up group-by labels, simply add the desired label names to the **Group by labels for aggregation** field in the Profiler and it will appear in the view creation drawer.
+
+<BrowserWindow>
+
+![Group by labels for aggregation](../static/img/views/group-by.png)
+
+</BrowserWindow>
+
+<br />
+
+Now any query made in this view will automatically include the specified group-by labels for aggregation.
+
+<BrowserWindow>
+
+![A view with group by labels for aggregation](../static/img/views/group-by-created.png)
+
+</BrowserWindow>
+
+<br />
+
+### How to create views with filters
+
+When profiling, you might use the **Filters** feature to narrow down your data by searching for a function or by applying filter presets. If you find yourself frequently applying the same filters, you can save time by creating a view that includes these filters by default.
+
+To set up Filters in the view, simply filter for a function or apply a filter preset in the Profiler and it will appear in the view creation drawer.
+
+<BrowserWindow>
+
+![Create views with filters](../static/img/views/filters-view.png)
+
+</BrowserWindow>
+
+<br />
+
+Now any query made in this view will automatically include the specified filters.
+
+<BrowserWindow>
+
+![A view with filters](../static/img/views/filters-view-created.png)
+
+</BrowserWindow>
