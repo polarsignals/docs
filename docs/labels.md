@@ -96,3 +96,26 @@ The relabeling config can be passed to the agent via the `--config-path` flag.
 | **Label**         | **Description** |
 |-------------------|-----------------|
 | **__meta_cpu**  | The CPU the sample was taken on. |
+
+---
+
+## **External Labels**
+External labels are custom labels that can be attached to all profiles using the `--metadata-external-labels` flag when starting the Polar Signals Agent.
+This allows you to add additional metadata that is meaningful to your specific environment or use case.
+
+**Usage:**
+```bash
+--metadata-external-labels=KEY=VALUE...
+```
+
+**Examples:**
+```bash
+# Single external label
+--metadata-external-labels=environment=production
+
+# Multiple external labels
+--metadata-external-labels=environment=production,team=backend,region=us-west-2
+```
+
+These labels will be attached to all profiles collected by the agent and can be used for filtering and grouping in queries.
+
