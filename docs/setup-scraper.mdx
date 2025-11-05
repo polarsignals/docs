@@ -99,6 +99,14 @@ data:
     - job_name: 'kubernetes-pods'
       kubernetes_sd_configs:
       - role: pod
+      profiling_config:
+        pprof_config:
+          memory:
+            keep_sample_type:
+              - type: inuse_space
+                unit: bytes
+          process_cpu:
+            enabled: false
       relabel_configs:
       - action: labelmap
         regex: __meta_kubernetes_pod_label_app_kubernetes_io_(.+)
