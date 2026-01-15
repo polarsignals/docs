@@ -1,4 +1,4 @@
-# Generating API Tokens 
+# Generating API Tokens
 
 :::info
 We talk about the Polar Signals Agent here which for now is the same code as the Parca Agent.
@@ -7,60 +7,146 @@ We talk about the Polar Signals Agent here which for now is the same code as the
 ## Generating API Tokens to set up continuous profile collection (Polar Signals Agent)
 
 An agent is set up through the use of the Polar Signals Agent which can be configured to continuously send profiles to the Polar Signals Cloud.
-In order to set up the Polar Signals Agent on a Kubernetes cluster, the user must first create an API token in the Polar Signals Cloud UI.
+In order to set up the Polar Signals Agent on a Kubernetes cluster, you must first create a service account and generate an API token in the Polar Signals Cloud UI.
 
-## Generating an API Token
+## Understanding Service Accounts and Tokens
 
-Usually, when creating a new organization or project you should be taken through our onboarding steps.
-One of those steps is generating the API token. 
+Polar Signals Cloud uses a role-based access control (RBAC) system for API authentication. Instead of project-specific JWT tokens, the system now uses service account tokens:
 
-If you still need to generate an API token afterward head over to the "Settings" page of the project.
+- **Service Accounts**: Named identities that can be granted specific permissions through role bindings
+- **Service Account Tokens**: API tokens associated with a service account (format: `psc_v1_<64-hex-characters>`)
+- **Role Bindings**: Assignments that grant a service account specific roles and permissions
 
-<BrowserWindow>
+This approach provides more granular control over what each token can access and do. The project to which data is sent is specified separately via the `projectID` gRPC metadata header.
 
-![Project settings link](/img/project-settings.png)
+## Creating a Service Account and Token
 
-</BrowserWindow>
+### Step 1: Navigate to IAM Settings
 
-In the API Tokens section, enter a descriptive name for the token that will be generated and click “Create token”.
-
-<BrowserWindow>
-
-![Create token button](/img/create-token-button.png)
-
-</BrowserWindow>
-
-Upon successful creation, the contents of the token will appear in the text box below.
-This value can be copied simply by clicking on the text box.
-The token is **only shown one time**, so make sure to copy and save it in a secure location.
-Don't worry though, you can always generate more tokens if necessary. 
+1. Go to your organization settings
+2. Navigate to the **IAM** tab
+3. Select the **Service Accounts** section
 
 <BrowserWindow>
 
-![Token generated successfully](/img/token-generated-jwt.png)
+![IAM Service Accounts page](/img/iam-service-accounts.png)
 
 </BrowserWindow>
 
-A record of each of the tokens that have been created will appear in the table below the text box.
-If necessary, tokens can be removed by clicking the “Delete” button.
+### Step 2: Create a Service Account
 
-Note: The token created through the Polar Signals UI is a [JSON Web Token](https://jwt.io/) (JWT). 
-JWT is a secure way to send information between parties as a JSON object. The token contains multiple pieces of information to authenticate and validate the user, including the project id.
-This ensures that the profiles sent using the Polar Signals Agent configured with this token can be stored in the correct location. Full contents of the token can be viewed on [jwt.io](https://jwt.io/).
+1. Click **Create Service Account**
+2. Enter a descriptive name (e.g., "kubernetes-production-agent")
+3. Click **Create**
 
-## Using the generated token to set up a Polar Signals Agent
+<BrowserWindow>
+
+![Create Service Account modal](/img/create-service-account.png)
+
+</BrowserWindow>
+
+### Step 3: Assign Roles to the Service Account
+
+After creating the service account, you need to grant it appropriate permissions:
+
+1. Go to the **Role Bindings** section in the IAM tab
+2. Click **Create Role Binding**
+3. Select your service account as the subject
+4. Assign appropriate roles (e.g., `writer` or `profile-writer` for agents that need to send profiling data)
+5. Optionally scope the binding to a specific project
+
+<BrowserWindow>
+
+![Create Role Binding modal](/img/create-role-binding.png)
+
+</BrowserWindow>
+
+For more information about roles and permissions, see the [User Roles documentation](user-roles.mdx).
+
+### Step 4: Generate a Token
+
+1. Return to the **Service Accounts** section
+2. Find your service account and click on it to view details
+3. In the **Tokens** section, click **Create Token**
+4. Enter a descriptive name for the token
+5. Click **Create Token**
+
+<BrowserWindow>
+
+![Service Account Tokens section](/img/service-account-tokens.png)
+
+</BrowserWindow>
+
+Upon successful creation, the token will appear in a text box. The token value can be copied by clicking on the text box.
+
+:::warning
+The token is **only shown once** during creation. Make sure to copy and save it in a secure location (e.g., a password manager or secrets management system). If you lose the token, you'll need to create a new one.
+:::
+
+<BrowserWindow>
+
+![Token generated successfully](/img/token-generated-service-account.png)
+
+</BrowserWindow>
+
+### Token Format
+
+Service account tokens follow the format: `psc_v1_<64-hex-characters>`
+
+### Managing Tokens
+
+A record of each token created for a service account appears in the tokens table. You can:
+- View token metadata (name, creation date, last used date)
+- Delete tokens that are no longer needed
+
+Note: Only the cryptographic hash of each token is stored. The actual token value cannot be retrieved after creation.
+
+### Service Account Quotas
+
+- Maximum 50 service accounts per organization
+- Maximum 100 tokens per service account
+
+## Using the Service Account Token
 
 The Polar Signals Agent is an always-on sampling profiler used to capture raw profiling data.
 It can discover targets to profile through Kubernetes or systemd.
 When set up on a [Kubernetes](setup-collection-kubernetes.mdx) node, the Polar Signals Agent can discover containers in that node and continuously send profiles from these containers to the Polar Signals Cloud.
 Similarly, when set up using systemd, the Polar Signals Agent can discover systemd units on the node the agent is running on.
 
-The following command can be run to set up the Polar Signals Agent via a CLI or through systemd on any Linux machine.
-The token generated in the steps above should be provided in the command following the `--bearer-token` flag, as can be seen in the example below.
+### Authentication with Service Account Tokens
+
+When using service account tokens, you need to provide two pieces of information:
+
+1. **Token**: The service account token via the `--remote-store-bearer-token-file` flag
+2. **Project ID**: The project ID via the `--remote-store-grpc-headers` flag with the key `projectID`
+
+The token is sent in the `Authorization: Bearer` header, while the project ID is sent as gRPC metadata.
+
+### Example Setup
+
+First, save your service account token to a file:
 
 ```bash
-sudo dist/parca-agent --node=test --log-level=debug --kubernetes=false --insecure --systemd-units=docker-b8873e261a9fb63e83d3d865a8780066e12e55b2f7eb8f6ac87db0b08444c6a8.scope --bearer-token eyJhbGciOiJFZERTQSJ9.eyJhdWQiOiI2ZmJiNjQwMy0yMDNkLTRhYjEtYjQ4Yy02ZGZiZmM2N2E2NzkiLCJpYXQiOjE2NTIzNTAxNzYwMzk4ODU0MDMsImlzcyI6Imh0dHBzOi8vYXBpLnBvbGFyc2lnbmFscy5jb20vIiwianRpIjoiNTdhYmJjZDAtNjdjNS00Y2Q2LWFlNmQtMTIxZTNkNjA5MTdhIiwicHJvamVjdElkIjoiNmZiYjY0MDMtMjAzZC00YWIxLWI0OGMtNmRmYmZjNjdhNjc5IiwidmVyc2lvbiI6IjEuMC4wIiwid3JpdGVQcm9maWxlcyI6dHJ1ZX0.OW16Shc4B48EW5TfYP9rggC7Pw9anu3yFd_vOoMqg2cwypBTlCDTOVvu6XtjNurxCUTJz24xXlzoS_Gyt18DAQ
+echo "psc_v1_a1b2c3d4e5f6..." > /path/to/token.txt
 ```
 
-Upon successful execution of this command, the agent should be set up to capture profiles and send them to the Polar Signals cloud.
-For more information on the [Polar Signals Agent](https://www.parca.dev/docs/parca-agent) and how to explore collected data, see here: [Kubernetes](https://www.parca.dev/docs/kubernetes), [systemd](https://www.parca.dev/docs/systemd).
+Then, run the Polar Signals Agent:
+
+```bash
+sudo parca-agent \
+  --node=production-node-1 \
+  --log-level=info \
+  --remote-store-bearer-token-file=/path/to/token.txt \
+  --remote-store-grpc-headers=projectID=6fbb6403-203d-4ab1-b48c-6dfbfc67a679
+```
+
+Replace:
+- `/path/to/token.txt` with the path to your token file
+- `6fbb6403-203d-4ab1-b48c-6dfbfc67a679` with your actual project ID (found in your project settings)
+
+### Kubernetes Deployment
+
+When deploying to Kubernetes, the token is typically stored as a Secret and mounted as a file, while the project ID is provided via command-line arguments in the DaemonSet configuration. See the [Kubernetes Setup guide](setup-collection-kubernetes.mdx) for detailed instructions.
+
+Upon successful execution, the agent will capture profiles and send them to the Polar Signals Cloud.
+For more information on the [Polar Signals Agent](https://www.parca.dev/docs/parca-agent) and how to explore collected data, see: [Kubernetes](https://www.parca.dev/docs/kubernetes), [systemd](https://www.parca.dev/docs/systemd).

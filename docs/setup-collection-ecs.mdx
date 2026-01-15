@@ -5,9 +5,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 To set up the Polar Signals agent on AWS ECS an ECS task definition needs to be created. Below is an example of a task definition, keep in mind a few things about this task:
 
-1. Create a secret that contains the Polar Signals authentication token. In the example below it is injected into the container using [AWS SSM](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-taskdefinition-secret.html#aws-properties-ecs-taskdefinition-secret-properties), and passed to the agent via the `PARCA_BEARER_TOKEN` environment variable.
-2. Each of the mount points are important, they cannot be removed, each of them serve an important purpose.
-3. It is crucial that the `pidMode` is "host", otherwise the agent cannot perform its functionality.
+1. Create a secret that contains your Polar Signals service account token. In the example below it is injected into the container using [AWS SSM](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-taskdefinition-secret.html#aws-properties-ecs-taskdefinition-secret-properties), and passed to the agent via the `PARCA_BEARER_TOKEN` environment variable.
+2. You'll need to provide your project ID via the command arguments. Replace `<your-project-id>` with your actual project ID.
+3. Each of the mount points are important, they cannot be removed, each of them serve an important purpose.
+4. It is crucial that the `pidMode` is "host", otherwise the agent cannot perform its functionality.
+
+For instructions on creating a service account token, see the [Generating Tokens](/docs/generating-tokens) documentation.
 
 <WithVersions language="json">
   { versions =>
@@ -28,6 +31,7 @@ To set up the Polar Signals agent on AWS ECS an ECS task definition needs to be 
             "essential": false,
             "command": [
                 "--remote-store-address=grpc.polarsignals.com:443",
+                "--remote-store-grpc-headers=projectID=<your-project-id>"
             ],
             "environment": [],
             "mountPoints": [

@@ -7,25 +7,35 @@ import KubernetesManifests from '@site/src/components/KubernetesManifests';
 - Kubernetes Cluster.
 - Kubernetes Nodes are running Linux 5.4 or newer.
 
-### Get an API token
+### Get a Service Account Token and Project ID
 
-To be able to send any data to Polar Signals Cloud, we're going to need an API token for the
-collection mechanism to authenticate with the Polar Signals API.
+To send data to Polar Signals Cloud, you'll need:
+1. A **service account token** for authentication
+2. Your **project ID** to specify where the data should be sent
 
-Please refer to the [Generating Tokens](/docs/generating-tokens) documentation that has more details.
+Please refer to the [Generating Tokens](/docs/generating-tokens) documentation for detailed instructions on creating a service account and generating a token.
+
+To find your project ID:
+1. Navigate to your project settings in the Polar Signals Cloud UI
+2. The project ID is displayed in the project details section
+3. Copy the project ID (it will be in UUID format, e.g., `6fbb6403-203d-4ab1-b48c-6dfbfc67a679`)
 
 ### Instructions
 
-The Kubernetes manifest below, will deploy the Polar Signals Agent as DaemonSet to a Kubernetes cluster. Here's what it does in summary:
+The Kubernetes manifest below will deploy the Polar Signals Agent as a DaemonSet to a Kubernetes cluster. Here's what it does in summary:
 
 1. Creates a namespace called `polarsignals` to deploy the agent into.
-2. Creates a secret containing the Polarsignals API token (which you should have created above) for authentication.
+2. Creates a secret containing your service account token for authentication.
 3. Defines a ClusterRole and ClusterRoleBinding to grant the agent permissions to list pods and get node info across the cluster.
-4. Deploys the agent as a DaemonSet. This will deploy a pod to each nodes in the cluster. The agent container runs with some privileged settings to enable profiling via eBPF.
+4. Deploys the agent as a DaemonSet. This will deploy a pod to each node in the cluster. The agent container runs with privileged settings to enable profiling via eBPF.
 
 The agent will then profile all applications running on the nodes and send the profiling data to the Polar Signals Cloud for queries and analysis.
 
-Make sure to paste in your generated API token and then copy the manifest below into a file called `polarsignals-agent.yaml`, then apply it to your Kubernetes cluster using the command below.
+Before applying the manifest:
+1. Replace `<your-service-account-token-here>` with your actual service account token
+2. Replace `<your-project-id-here>` with your actual project ID
+
+Then copy the manifest below into a file called `polarsignals-agent.yaml` and apply it to your Kubernetes cluster using the command below.
 
 [//]: # (TODO: Remove this in favor of https://api.polarsignals.com/api/manifests.yaml?)
 
@@ -44,5 +54,11 @@ kubectl apply -f polarsignals-agent.yaml
 You can also use the command below to apply the manifest directly from the Polar Signals API.
 
 ```bash
-kubectl apply -f "https://api.polarsignals.com/api/manifests.yaml?token=<your-token>"
+kubectl apply -f "https://api.polarsignals.com/api/manifests.yaml?token=<your-service-account-token>&projectID=<your-project-id>"
 ```
+
+Replace `<your-service-account-token>` and `<your-project-id>` with your actual values.
+
+:::info
+The service account token is passed in the `Authorization: Bearer` header, while the project ID is sent as gRPC metadata in the `projectID` header. This separation allows tokens to be reused across multiple projects.
+:::

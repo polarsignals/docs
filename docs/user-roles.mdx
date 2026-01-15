@@ -1,33 +1,200 @@
-# Organization User Roles
-Polar Signals Cloud has two user roles: Owner, Viewer. Each role has different permissions and capabilities.
+# Organization User Roles and Permissions
 
-## Owner
-The Owner role has full access to the organization and can perform all actions. This includes:
+Polar Signals Cloud uses a role-based access control (RBAC) system to manage user and service account permissions. Roles define sets of permissions, and these roles are assigned to users or service accounts through role bindings.
+
+## Understanding the IAM System
+
+The IAM system consists of three main components:
+
+- **Roles**: Collections of permissions that define what actions can be performed
+- **Role Bindings**: Assignments that grant a specific role to a user or service account
+- **Permissions**: Individual capabilities like `profile.read`, `profile.write`, `project.create`, etc.
+
+## System Roles
+
+Polar Signals Cloud provides several built-in system roles:
+
+### Owner
+The Owner role has full access to the organization and can perform all management actions. This includes:
 - Viewing profiling reports
-- Creating and deleting projects
+- Creating, updating, and deleting projects
+- Managing service accounts and tokens
+- Creating and managing role bindings
 - Inviting users
-- Changing user roles
 - Configuring Single Sign-On (SSO)
 - Managing billing
+- Creating custom roles
 - Deleting the organization
 
-## Viewer
+### Viewer
 The Viewer role has read-only access to the organization. This includes:
 - Viewing profiling reports
 - Viewing projects
+- Listing organization resources
 
+### Writer
+The Writer role can send profiling data to projects. This includes:
+- All permissions from the Viewer role
+- Writing profiling data (`profile.write`)
+- Writing debug information (`debuginfo.write`)
 
-## Changing User Roles
-Any user with the Owner role can change the role of another user in the organization.
+This role is ideal for service accounts used by profiling agents.
+
+### Profile Writer
+The Profile Writer role is a specialized role for sending only profiling data:
+- Writing profiling data (`profile.write`)
+
+This role is ideal for service accounts that only need to send profiles, without any read access.
+
+### Debug Info Writer
+The Debug Info Writer role is a specialized role for uploading debug information:
+- Writing debug information (`debuginfo.write`)
+
+This role is ideal for service accounts or CI/CD pipelines that upload debug symbols.
+
+## Managing User Roles
+
+### Viewing Role Bindings
+
+To view who has access to your organization:
+1. Go to your organization settings
+2. Navigate to the **IAM** tab
+3. Select the **Role Bindings** section
+
+<BrowserWindow>
+
+![Role Bindings page](/img/iam-role-bindings.png)
+
+</BrowserWindow>
+
+Here you can see all users and service accounts along with their assigned roles.
+
+### Granting Roles to Users
+
+To grant a role to a user:
+1. Go to the **Role Bindings** section in the IAM tab
+2. Click **Create Role Binding**
+3. Select the user as the subject
+4. Select the role to assign
+5. Optionally, scope the role binding to a specific project
+6. Click **Create**
+
+<BrowserWindow>
+
+![Create Role Binding for user](/img/create-user-role-binding.png)
+
+</BrowserWindow>
+
+### Changing User Roles
 
 To change a user's role:
-1. Go to the organization settings page.
-2. Scroll down to the "Users" section.
-3. Click on the "Manage Access" button next to the user you want to change the role for.
-	![Users Section](/img/roles/users-section.png)
-4. Select the new role from the popup and click "Save".
-	![Roles Popup](/img/roles/role-popup.png)
+1. In the **Role Bindings** section, find the role binding you want to modify
+2. Delete the existing role binding
+3. Create a new role binding with the desired role
 
 :::info
-Note: You cannot change the role of the last Owner in the organization. Make sure there is at least one Owner in the organization at all times.
+You cannot remove the last Owner role binding from an organization. Make sure there is at least one Owner in the organization at all times.
 :::
+
+### Removing User Access
+
+To remove a user's access:
+1. Go to the **Role Bindings** section
+2. Find all role bindings for the user
+3. Click **Delete** on each role binding
+
+## Custom Roles
+
+Organizations can create custom roles with specific sets of permissions tailored to their needs.
+
+### Creating a Custom Role
+
+1. Go to your organization settings
+2. Navigate to the **IAM** tab
+3. Select the **Roles** section
+4. Click **Create Role**
+5. Enter a name for the role
+6. Select the permissions to include
+7. Click **Create**
+
+<BrowserWindow>
+
+![Create Custom Role](/img/create-custom-role.png)
+
+</BrowserWindow>
+
+### Available Permissions
+
+Permissions are organized by resource type:
+
+**Profile Data:**
+- `profile.read` - View profiling data
+- `profile.write` - Send profiling data
+
+**Projects:**
+- `project.read` - View project details
+- `project.list` - List projects
+- `project.create` - Create new projects
+- `project.update` - Modify projects
+- `project.delete` - Delete projects
+
+**Views:**
+- `view.read` - View saved views
+- `view.list` - List views
+- `view.create` - Create views
+- `view.update` - Modify views
+- `view.delete` - Delete views
+
+**Organization:**
+- `organization.read` - View organization details
+- `organization.update` - Modify organization settings
+- `organization.delete` - Delete organization
+- `organization.usage.read` - View usage data
+
+**Service Accounts:**
+- `serviceaccount.list` - List service accounts
+- `serviceaccount.create` - Create service accounts
+- `serviceaccount.delete` - Delete service accounts
+- `serviceaccounttoken.list` - List tokens
+- `serviceaccounttoken.create` - Create tokens
+- `serviceaccounttoken.delete` - Delete tokens
+
+**IAM Management:**
+- `role.list` - List roles
+- `role.create` - Create custom roles
+- `role.delete` - Delete custom roles
+- `rolebinding.list` - List role bindings
+- `rolebinding.create` - Create role bindings
+- `rolebinding.delete` - Delete role bindings
+- `invite.list` - List invites
+- `invite.create` - Create invites
+- `invite.expire` - Expire invites
+
+**Debug Info:**
+- `debuginfo.list` - List debug information
+- `debuginfo.read` - Read debug information
+- `debuginfo.write` - Upload debug information
+
+**Billing:**
+- `billing.read` - View billing information
+- `billing.modify` - Modify billing settings
+
+## Project-Scoped Role Bindings
+
+Role bindings can optionally be scoped to a specific project. When scoped, the permissions only apply within that project's context.
+
+For example, you might grant a user the Viewer role scoped to a specific project, allowing them to view profiling data only for that project.
+
+To create a project-scoped role binding:
+1. When creating a role binding, check the **Scope to project** option
+2. Select the project from the dropdown
+3. Complete the role binding creation
+
+## Service Account Roles
+
+Service accounts (used for API authentication) can be granted roles just like users. This is essential for:
+- Profiling agents that need to send data (use Writer or Profile Writer role)
+- CI/CD pipelines that upload debug symbols (use Debug Info Writer role)
+- Automation scripts that query data (use Viewer role)
+
+See the [Generating Tokens documentation](generating-tokens.mdx) for details on creating service accounts and assigning them roles.

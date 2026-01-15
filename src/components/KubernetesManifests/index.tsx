@@ -22,7 +22,7 @@ metadata:
     app.kubernetes.io/instance: polarsignals-agent
     app.kubernetes.io/name: polarsignals-agent
 stringData:
-  token: <your-token-here>
+  token: <your-service-account-token-here>
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -97,6 +97,7 @@ spec:
             - --http-address=:7071
             - --remote-store-address=grpc.polarsignals.com:443
             - --remote-store-bearer-token-file=/var/polarsignals-agent/token
+            - --remote-store-grpc-headers=projectID=<your-project-id-here>
             - --debuginfo-strip
             - --debuginfo-temp-dir=/tmp
             - --debuginfo-upload-cache-duration=5m

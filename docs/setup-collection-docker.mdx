@@ -8,12 +8,13 @@ import CodeBlock from '@theme/CodeBlock';
 - Linux 5.4 or newer.
 - Docker or Podman.
 
-### Get an API token
+### Get a Service Account Token and Project ID
 
-To be able to send any data to Polar Signals Cloud, we're going to need an API token for the
-collection mechanism to authenticate with the Polar Signals API.
+To send data to Polar Signals Cloud, you'll need:
+1. A **service account token** for authentication
+2. Your **project ID** to specify where the data should be sent
 
-Please refer to the [Generating Tokens](/docs/generating-tokens) documentation that has more details.
+Please refer to the [Generating Tokens](/docs/generating-tokens) documentation for detailed instructions.
 
 ### Run the container
 
@@ -35,7 +36,8 @@ Running the Polar Signals Agent using docker can be done easily with this comman
       &nbsp;&nbsp;-v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket \<br />
       &nbsp;&nbsp;ghcr.io/parca-dev/parca-agent:{versions.agent} \<br />
       &nbsp;&nbsp;--remote-store-address=grpc.polarsignals.com:443 \<br />
-      &nbsp;&nbsp;--remote-store-bearer-token=&lt;your-token&gt;
+      &nbsp;&nbsp;--remote-store-bearer-token=&lt;your-service-account-token&gt; \<br />
+      &nbsp;&nbsp;--remote-store-grpc-headers=projectID=&lt;your-project-id&gt;
     </CodeBlock>
   }
 </WithVersions>
@@ -55,4 +57,5 @@ Let's go one by one what each of these flags are for:
 * `ghcr.io/parca-dev/parca-agent:...` The container image.
 * `/bin/parca-agent` The binary to run.
 * `--remote-store-address=grpc.polarsignals.com:443` Configuring the agent to send the profiling data to Polar Signals Cloud.
-* `--remote-store-bearer-token=<your-token>` Authentication with Polar Signals Cloud. The token you grabbed in the [grab-a-token](#get-an-api-token) step.
+* `--remote-store-bearer-token=<your-service-account-token>` Authentication with Polar Signals Cloud using your service account token.
+* `--remote-store-grpc-headers=projectID=<your-project-id>` Specifies which project to send the profiling data to.
