@@ -19,7 +19,7 @@ We recommend doing the following in a CI/CD pipeline.
 
 ## Prerequisites
 
-* [An authentication token](/docs/generating-tokens.mdx)
+* [A service account token and project ID](/docs/generating-tokens.mdx)
 * [parca-debuginfo](https://github.com/parca-dev/parca-debuginfo)
 
 ### Install `parca-debuginfo`
@@ -40,21 +40,27 @@ parca-debuginfo source ./main
 Now we're ready to upload it, also using `parca-debuginfo`.
 
 ```
-parca-debuginfo upload 
-  --store-address=grpc.polarsignals.com:443
-  --bearer-token=<your token>
-  --build-id="$(parca-debuginfo buildid ./main)"
-  --type=sources
+parca-debuginfo upload \
+  --store-address=grpc.polarsignals.com:443 \
+  --bearer-token=<your-service-account-token> \
+  --grpc-headers=projectID=<your-project-id> \
+  --build-id="$(parca-debuginfo buildid ./main)" \
+  --type=sources \
   source.tar.zstd
 ```
 
 Let's look at each of those flags:
 
 * `--store-address=grpc.polarsignals.com:443`: This is the Polar Signals Cloud endpoint that accepts the upload request.
-* `--bearer-token=<your token>`: This is the authentication token (see [here](generating-tokens) how to obtain it).
+* `--bearer-token=<your-service-account-token>`: This is your service account authentication token (see [here](generating-tokens) how to create a service account and obtain a token).
+* `--grpc-headers=projectID=<your-project-id>`: Specifies which project to upload the source code to.
 * `--build-id="$(parca-debuginfo buildid ./main)"`: We need to associate the source code with the binary, that is done using the binary's Build ID. The `parca-debuginfo` utility can read the Build ID, which is what we're doing here.
 * `--type=sources`: The `parca-debuginfo` tool can upload debuginfo, executables and source code. In this case we're specifying that we're uploading source code.
 * `source.tar.zstd` is the file we previously generated above.
+
+Replace:
+- `<your-service-account-token>` with your actual service account token
+- `<your-project-id>` with your actual project ID
 
 And you're done! 
 Now when looking at profiling data of that Build ID, you'll be able to open the source view and see profiling data inlined with your code. 🎉

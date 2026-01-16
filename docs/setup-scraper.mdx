@@ -2,6 +2,10 @@
 
 While the primary way to write data to Polar Signals Cloud is to [use the agent](/docs/setup-collection-kubernetes), there may be reasons to want to write additional data that cannot be obtained via the agent.
 
+:::info
+You'll need a service account token and project ID. See the [Generating Tokens](/docs/generating-tokens) documentation for instructions on creating a service account and generating a token. Replace `<your-project-id>` in the manifest below with your actual project ID.
+:::
+
 ## Languages
 
 Here is a table of Languages/runtimes and libraries that can be used to gather additional types of profiling data.
@@ -154,6 +158,7 @@ spec:
         - --config-path=/var/polarsignals-scraper/polarsignals-scraper.yaml
         - --store-address=grpc.polarsignals.com:443
         - --bearer-token-file=/var/polarsignals-secret/token
+        - --grpc-headers=projectID=<your-project-id>
         - --mode=scraper-only
         image: ghcr.io/parca-dev/parca:v0.20.0
         livenessProbe:

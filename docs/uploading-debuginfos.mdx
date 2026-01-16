@@ -16,17 +16,29 @@ The solution to this problem is to upload debuginfos out of band, using the `par
 
 <InstallParcaDebuginfo />
 
-### Obtain a token
+### Obtain a Service Account Token and Project ID
 
-Next you'll need to obtain an authentication token to upload the debuginfos to your Polar Signals Cloud project. See the [Generating Tokens page](/docs/generating-tokens) to learn how.
+Next you'll need:
+1. A service account token for authentication
+2. Your project ID to specify which project to upload to
+
+See the [Generating Tokens page](/docs/generating-tokens) to learn how to create a service account and generate a token.
 
 ### Upload
 
-Finally you can use the authentication token to issue the upload command:
+Finally you can use the service account token and project ID to issue the upload command:
 
 ```
-parca-debuginfo upload --store-address=grpc.polarsignals.com:443 --bearer-token=<the-token-you-obtained> /path/to/your/binary
+parca-debuginfo upload \
+  --store-address=grpc.polarsignals.com:443 \
+  --bearer-token=<your-service-account-token> \
+  --grpc-headers=projectID=<your-project-id> \
+  /path/to/your/binary
 ```
+
+Replace:
+- `<your-service-account-token>` with your actual service account token
+- `<your-project-id>` with your actual project ID
 
 ## Troubleshooting
 
@@ -39,5 +51,10 @@ For various reasons debuginfo with the same build ID might already exist. For ex
 If you still want to replace the existing debuginfos with the debuginfos use the `--force` flag. So the full command might look something like this:
 
 ```
-parca-debuginfo upload --store-address=grpc.polarsignals.com:443 --bearer-token=<the-token-you-obtained> /path/to/your/binary --force
+parca-debuginfo upload \
+  --store-address=grpc.polarsignals.com:443 \
+  --bearer-token=<your-service-account-token> \
+  --grpc-headers=projectID=<your-project-id> \
+  /path/to/your/binary \
+  --force
 ```

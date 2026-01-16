@@ -1,31 +1,136 @@
-# Inviting users to Organizations
+# Inviting Users to Organizations
 
-## Inviting team members to your Organization
+## Overview
 
-You can invite team members to your Polar Signals organization.
-Once invited, the user can view any project within the organization, 
-and administrate the organization (create new projects, invite new users, and more).
+You can invite team members to your Polar Signals organization with specific roles and permissions. The new IAM system allows you to control exactly what access invited users will have once they accept the invitation.
 
-## How to invite team members to your organization
+## How Invites Work
 
-Navigate to the organization settings page by clicking on the leftmost drop-down in the navbar to display a list of organizations 
-and their projects indented respectively.
-Click on an organization to pull up the organization settings page.
+When you create an invite:
+1. You specify the role the user will receive upon acceptance
+2. Optionally, you can scope the role to a specific project
+3. An invite link or token is generated
+4. The user accepts the invite using the link
+5. A role binding is automatically created, granting the user the specified permissions
+
+Invites have an expiration date and can be expired manually if needed.
+
+## Creating an Invite
+
+### Step 1: Navigate to IAM Settings
+
+1. Go to your organization settings
+2. Navigate to the **IAM** tab
+3. Select the **Invites** section
 
 <BrowserWindow>
 
-![Navbar Organizations dropdown](/img/organization-dropdown.png)
+![IAM Invites page](/img/iam-invites.png)
 
 </BrowserWindow>
 
-The organization settings page lists all existing members and features an **Invite Users** button.
-Clicking on the **Invite Users** button will open up a modal which can be used to either enter the email address of the team member you want to invite 
-or get the invite link which can be shared with team members.
+### Step 2: Create the Invite
+
+1. Click **Create Invite**
+2. Select the role to assign to the invited user (e.g., Owner, Viewer, Writer)
+3. Optionally, scope the invite to a specific project
+4. Set an expiration date (default is 7 days)
+5. Click **Create**
 
 <BrowserWindow>
 
-![Invite users modal](/img/invite-users-modal.png)
+![Create Invite modal](/img/create-invite-modal.png)
 
 </BrowserWindow>
 
-After a team member has joined an organization, you can still manage their access from the organization settings page.
+### Step 3: Share the Invite
+
+Once created, you can:
+- Copy the invite link to share with the user
+- View the invite token
+- Send the link via email or messaging
+
+<BrowserWindow>
+
+![Invite link generated](/img/invite-link-generated.png)
+
+</BrowserWindow>
+
+:::warning
+Invite links should be treated as sensitive. Anyone with the link can accept the invite and gain access to your organization with the specified role.
+:::
+
+## Managing Invites
+
+### Viewing Active Invites
+
+In the **Invites** section of the IAM tab, you can see:
+- All active invites
+- The role each invite will grant
+- When each invite was created
+- When each invite expires
+- Who created the invite
+
+### Expiring an Invite
+
+To manually expire an invite before its expiration date:
+1. Find the invite in the invites list
+2. Click **Expire** or **Delete**
+3. Confirm the action
+
+Once expired, the invite link will no longer work.
+
+### Tracking Invite Acceptances
+
+The system tracks when invites are accepted and by whom. You can view this information in the invite details or in the audit logs.
+
+## User Experience
+
+### Accepting an Invite
+
+When a user receives an invite link:
+1. They click the link, which takes them to the Polar Signals Cloud
+2. If not logged in, they'll be prompted to sign in or create an account
+3. Once authenticated, they can review the invitation details (organization name, role)
+4. They click **Accept Invite**
+5. A role binding is created, granting them access
+6. They're redirected to the organization
+
+### After Acceptance
+
+After accepting an invite:
+- The user will have immediate access to the organization with the assigned role
+- Organization owners can view the user's role bindings in the **Role Bindings** section
+- The user's access can be modified or revoked by managing their role bindings
+
+## Managing User Access
+
+After a team member has joined your organization, you can manage their access from the **Role Bindings** section in the IAM tab:
+
+- **View all roles**: See all role bindings for the user
+- **Add more roles**: Create additional role bindings for different projects or with different permissions
+- **Change roles**: Delete old role bindings and create new ones with different roles
+- **Remove access**: Delete all role bindings for the user
+
+For detailed information about roles and permissions, see the [User Roles documentation](user-roles.mdx).
+
+## Best Practices
+
+### Role Selection
+
+- **Owner**: Only invite trusted team members as Owners, as they have full control over the organization
+- **Viewer**: Good default for team members who need to view profiling data but not make changes
+- **Writer**: Typically not used for human users; better suited for service accounts
+- **Custom Roles**: Create custom roles for specific use cases (e.g., a "Developer" role with project creation but not billing access)
+
+### Project Scoping
+
+- Use project-scoped invites when you want to grant access to only a specific project
+- Organization-wide invites are better for team members who need access to multiple projects
+
+### Security
+
+- Set appropriate expiration dates on invites (shorter for sensitive roles)
+- Expire invites that are no longer needed
+- Regularly review active invites and role bindings
+- Use role-specific invites rather than always inviting as Owner

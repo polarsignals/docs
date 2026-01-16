@@ -5,12 +5,13 @@
 - Linux 5.4 or newer.
 - [snapd](https://snapcraft.io/about)
 
-### Get an API token
+### Get a Service Account Token and Project ID
 
-To be able to send any data to Polar Signals Cloud, we're going to need an API token for the
-collection mechanism to authenticate with the Polar Signals API.
+To send data to Polar Signals Cloud, you'll need:
+1. A **service account token** for authentication
+2. Your **project ID** to specify where the data should be sent
 
-Please refer to the [Generating Tokens](/docs/generating-tokens) documentation that has more details.
+Please refer to the [Generating Tokens](/docs/generating-tokens) documentation for detailed instructions.
 
 ### Bootstrap with cloud-init
 
@@ -21,7 +22,8 @@ If you're on a cloud or hypervisor that supports [`cloud-init`](https://cloudini
 snap:
   commands:
     - [install, parca-agent, --classic]
-    - [set, parca-agent, remote-store-bearer-token=<token>]
+    - [set, parca-agent, remote-store-bearer-token=<your-service-account-token>]
+    - [set, parca-agent, remote-store-grpc-headers=projectID=<your-project-id>]
     - [start, --enable, parca-agent]
 ```
 
@@ -31,8 +33,11 @@ To setup collection on a machine that's already provisioned, use the following s
 
 ```shell
 sudo snap install parca-agent --classic
-sudo snap set parca-agent remote-store-bearer-token=<token>
+sudo snap set parca-agent remote-store-bearer-token=<your-service-account-token>
+sudo snap set parca-agent remote-store-grpc-headers=projectID=<your-project-id>
 sudo snap start --enable parca-agent
 ```
+
+Replace `<your-service-account-token>` with your actual service account token and `<your-project-id>` with your actual project ID.
 
 Learn more about the Parca Agent snap in the [Parca docs](https://www.parca.dev/docs/parca-agent-snap).
