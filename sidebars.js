@@ -86,7 +86,7 @@ const sidebars = {
         "binary-filtering",
         "graph-tooltip-details",
         "single-sign-on",
-        "user-roles",
+        "iam",
         "inverted-call-stacks",
         "flame-charts-with-cpu-profiles",
         "mcp",
