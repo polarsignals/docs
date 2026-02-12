@@ -15,44 +15,13 @@ The Model Context Protocol enables AI assistants to securely connect to external
 
 ## Setup
 
-### 1. Generate an API Token
+Head to the "AI" section of the Polar Signals dashboard to get started. Follow the instructions to connect your MCP client and authenticate securely.
 
-First, generate an API token in your Polar Signals project settings.
+<BrowserWindow>
 
-### 2. Add the MCP Server
+![AI selection](../static/img/ai-agent-selection.png)
 
-#### Using Claude Code CLI
-
-Setting up Remote MCP with Polar Signals Cloud is straightforward:
-
-```bash
-claude mcp add --transport http polarsignals https://api.polarsignals.com/api/mcp/ --header "Authorization: Bearer YOUR_TOKEN"
-```
-
-No extra installation is required. Your LLM can directly talk to our Remote MCP.
-
-#### Using Cursor
-
-Add this configuration to your Cursor settings:
-
-<CodeBlock className="language-json">
-{`{
-  "mcpServers": {
-    "polarsignals": {
-      "url": "https://api.polarsignals.com/api/mcp/",
-      "headers": {
-        "Authorization": "Bearer YOUR_TOKEN"
-      }
-    }
-  }
-}`}
-</CodeBlock>
-
-### 3. Remove the MCP Server
-
-```bash
-claude mcp remove polarsignals
-```
+</BrowserWindow>
 
 ## Usage Examples
 
@@ -69,6 +38,7 @@ The MCP server will translate your questions into precise profile queries and pr
 
 The Polar Signals MCP server provides the following tools:
 
+- `get_projects`: List all projects your account has access to
 - `profile_types`: Discover available profile types in your project
 - `labels`: Explore metadata labels in profiles  
 - `values`: Get specific label values for filtering
