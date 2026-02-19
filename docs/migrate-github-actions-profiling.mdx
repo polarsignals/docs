@@ -1,0 +1,90 @@
+import BrowserWindow from "@site/src/components/BrowserWindow";
+
+# Migrate GitHub Actions Profiling to Service Accounts
+
+This guide walks you through migrating your GitHub Actions profiling workflows from project tokens to the new IAM system using service accounts with minimal role bindings.
+
+## What's Changing
+
+Previously, GitHub Actions profiling workflows authenticated using project-scoped JWT tokens. The new IAM system replaces these with:
+
+- **Service accounts** — named identities with granular, role-based permissions
+- **Service account tokens** — API tokens (format: `psc_v1_<64-hex-characters>`) tied to a service account
+- **Role bindings** — assignments that grant only the permissions needed
+
+The project to send data to is now specified separately via a `projectID` gRPC metadata header, rather than being embedded in the token.
+
+## Steps
+
+### 1. Create a Service Account
+
+1. Go to your organization settings
+2. Navigate to **IAM** > **Service Accounts**
+3. Click **Create Service Account**
+4. Enter a descriptive name (e.g., `github-actions-profiling`)
+
+<BrowserWindow>
+
+![Create Service Account modal](/img/create-service-account.png)
+
+</BrowserWindow>
+
+### 2. Create a Role Binding
+
+1. Go to **IAM** > **Role Bindings**
+2. Click **Create Role Binding**
+3. Select your new service account as the subject
+4. Select the **Writer** role
+5. Optionally, scope the binding to a specific project
+
+<BrowserWindow>
+
+![Create Role Binding modal](/img/create-role-binding.png)
+
+</BrowserWindow>
+
+The **Writer** role grants `profile.write` and `debuginfo.write`. GitHub Actions profiling workflows typically need both since debug information is often only available in CI and needs to be uploaded alongside profiling data.
+
+:::tip
+If you are certain your workflow only sends profiling data and never uploads debuginfos, you can use the **Profile Writer** role instead, which only grants `profile.write`.
+:::
+
+### 3. Generate a Token
+
+1. Go to **IAM** > **Service Accounts** and click on your service account
+2. In the **Tokens** section, click **Create Token**
+3. **Copy the token immediately** — it is only shown once
+
+<BrowserWindow>
+
+![Token generated successfully](/img/token-generated-service-account.png)
+
+</BrowserWindow>
+
+### 4. Update GitHub Repository Secrets
+
+1. Go to your repository **Settings** > **Secrets and variables** > **Actions**
+2. Create or update the following secrets:
+
+| Secret Name | Value |
+|---|---|
+| `POLARSIGNALS_TOKEN` | Your new service account token (`psc_v1_...`) |
+| `POLARSIGNALS_PROJECT_ID` | Your project ID (UUID) |
+
+Find your project ID in your project settings in the Polar Signals Cloud UI.
+
+### 5. Update Your Workflow
+
+Replace the old token with the new service account token and add the `projectID` header. The two key flags are:
+
+- **Token**: `--remote-store-bearer-token` (for the agent) or `--bearer-token` (for `parca-push`)
+- **Project ID**: `--remote-store-grpc-headers=projectID=$POLARSIGNALS_PROJECT_ID` (for the agent) or `--grpc-headers=projectID=$POLARSIGNALS_PROJECT_ID` (for `parca-push`)
+
+### 6. Verify and Revoke
+
+Push a commit to trigger the workflow and verify profiling data appears in Polar Signals Cloud. Then revoke the old project token and remove the old secret from your repository settings.
+
+## See Also
+
+- [Generating Tokens](/docs/generating-tokens) — creating service accounts and tokens
+- [IAM](/docs/iam) — roles, permissions, and role bindings reference

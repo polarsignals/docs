@@ -1,0 +1,77 @@
+import BrowserWindow from "@site/src/components/BrowserWindow";
+
+# Migrate Scrapers to Service Accounts
+
+This guide walks you through migrating your Polar Signals Scraper deployments from project tokens to the new IAM system using service accounts with minimal role bindings.
+
+## What's Changing
+
+Previously, scrapers authenticated using project-scoped JWT tokens. The new IAM system replaces these with:
+
+- **Service accounts** — named identities with granular, role-based permissions
+- **Service account tokens** — API tokens (format: `psc_v1_<64-hex-characters>`) tied to a service account
+- **Role bindings** — assignments that grant only the permissions needed
+
+The project to send data to is now specified separately via a `projectID` gRPC metadata header, rather than being embedded in the token.
+
+## Steps
+
+### 1. Create a Service Account
+
+1. Go to your organization settings
+2. Navigate to **IAM** > **Service Accounts**
+3. Click **Create Service Account**
+4. Enter a descriptive name (e.g., `production-scraper`)
+
+<BrowserWindow>
+
+![Create Service Account modal](/img/create-service-account.png)
+
+</BrowserWindow>
+
+### 2. Create a Role Binding
+
+1. Go to **IAM** > **Role Bindings**
+2. Click **Create Role Binding**
+3. Select your new service account as the subject
+4. Select the **Profile Writer** role
+5. Optionally, scope the binding to a specific project
+
+<BrowserWindow>
+
+![Create Role Binding modal](/img/create-role-binding.png)
+
+</BrowserWindow>
+
+Scrapers only send profiling data (heap, mutex, goroutine, etc.) — they do not upload debug information. The **Profile Writer** role grants `profile.write`, which is all that's needed.
+
+### 3. Generate a Token
+
+1. Go to **IAM** > **Service Accounts** and click on your service account
+2. In the **Tokens** section, click **Create Token**
+3. **Copy the token immediately** — it is only shown once
+
+<BrowserWindow>
+
+![Token generated successfully](/img/token-generated-service-account.png)
+
+</BrowserWindow>
+
+### 4. Update Your Scraper Configuration
+
+Replace the old project token with the new service account token and add the `projectID` header. The two key flags are:
+
+- **Token**: `--bearer-token-file` (path to a file containing the token)
+- **Project ID**: `--grpc-headers=projectID=<your-project-id>`
+
+Find your project ID in your project settings in the Polar Signals Cloud UI.
+
+### 5. Verify and Revoke
+
+After restarting the scraper, verify that scraped profiling data is arriving in Polar Signals Cloud. Then revoke the old project token to complete the migration.
+
+## See Also
+
+- [Generating Tokens](/docs/generating-tokens) — creating service accounts and tokens
+- [IAM](/docs/iam) — roles, permissions, and role bindings reference
+- [Setup Scraping](/docs/setup-scraper) — scraper configuration reference
