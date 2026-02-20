@@ -114,6 +114,16 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Migration Guides",
+      items: [
+        "migrate-agents",
+        "migrate-scrapers",
+        "migrate-debuginfo-uploads",
+        "migrate-github-actions-profiling",
+      ],
+    },
+    {
+      type: "category",
       label: "Billing",
       items: ["billing-usage-data", "invoices"],
     },
