@@ -6,17 +6,9 @@ Screenshot of Flame Chart with CPU profiling data:
 ![Flame Chart with CPU profiling data](/img/vizualisation/flamechart-example.png)
 
 ## Prerequisite
-Before you can use Flame Chart with CPU profiling data, you need to be collecting the CPU profiling data with `cpu` or `thread_id` label, or any other label that will never have samples with overlapping timestamps, threads or CPUs can't have two things running on them at the same time so they are well suited for this purpose.
+The Parca Agent automatically attaches `cpu` and `thread_id` labels to all CPU profiling data. These labels ensure that samples never have overlapping timestamps, since threads and CPUs can't have two things running on them at the same time, making them well suited for Flame Chart visualization.
 
-You can do that by adding the following section to the parca agent configuration if you don't have it already:
-```yaml
-  relabel_configs:
-    - source_labels: [__meta_thread_id]
-      target_label: thread_id
-    - source_labels: [__meta_cpu]
-      target_label: cpu
-```
-This will add the `cpu` and `thread_id` labels to the CPU profiling data, which can be then used for Flame Chart visualization. More information about the relabeling can be found in the [relabeling documentation](https://www.parca.dev/docs/parca-agent-labelling#configuration).
+No additional configuration is needed. Just make sure you have not disabled these labels via `--metadata-disable-cpu-label` or `--metadata-disable-thread-id-label`. See the [labels documentation](https://www.parca.dev/docs/parca-agent-labelling/#always-present-labels) for more details.
 
 ## How to use Flame Chart with CPU profiling data
 Once you're on the Polar Signals cloud, you can use Flame Chart by selecting the `Flame Chart` option in the visualization type dropdown.
