@@ -108,6 +108,7 @@ const sidebars = {
         "install-parca-debuginfo",
         "install-parca-push",
         "setup-collection-kubernetes-gpu",
+        "configure-gpu-metrics-visualization",
         "setup-scraper",
         "filter-data-send",
       ],
