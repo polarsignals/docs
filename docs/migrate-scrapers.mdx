@@ -19,7 +19,7 @@ The project to send data to is now specified separately via a `projectID` gRPC m
 ### 1. Create a Service Account
 
 1. Go to your organization settings
-2. Navigate to **IAM** > **Service Accounts**
+2. Navigate to **Identity & Access Management** > **Service Accounts**
 3. Click **Create Service Account**
 4. Enter a descriptive name (e.g., `production-scraper`)
 
@@ -31,7 +31,7 @@ The project to send data to is now specified separately via a `projectID` gRPC m
 
 ### 2. Create a Role Binding
 
-1. Go to **IAM** > **Role Bindings**
+1. Go to **Identity & Access Management** > **Role Bindings**
 2. Click **Create Role Binding**
 3. Select your new service account as the subject
 4. Select the **Profile Writer** role
@@ -47,9 +47,17 @@ Scrapers only send profiling data (heap, mutex, goroutine, etc.) — they do not
 
 ### 3. Generate a Token
 
-1. Go to **IAM** > **Service Accounts** and click on your service account
-2. In the **Tokens** section, click **Create Token**
-3. **Copy the token immediately** — it is only shown once
+1. Go to **Identity & Access Management** > **Service Accounts** and click on the "Create API Token" button.
+2. You can either use an existing service account or create a new one specifically for the agent. If you create a new service account, make sure to assign it the appropriate role bindings as described in Step 2.
+3. Enter a descriptive name for the token
+4. Click **Create Token**
+5. **Copy the token immediately** — it is only shown once
+
+<BrowserWindow>
+
+![Create Token modal](/img/create-token-modal.png)
+
+</BrowserWindow>
 
 <BrowserWindow>
 

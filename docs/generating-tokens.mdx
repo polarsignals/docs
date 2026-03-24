@@ -24,7 +24,7 @@ This approach provides more granular control over what each token can access and
 ### Step 1: Navigate to IAM Settings
 
 1. Go to your organization settings
-2. Navigate to the **IAM** tab
+2. Navigate to the **Identity & Access Management** tab
 3. Select the **Service Accounts** section
 
 <BrowserWindow>
@@ -49,7 +49,7 @@ This approach provides more granular control over what each token can access and
 
 After creating the service account, you need to grant it appropriate permissions:
 
-1. Go to the **Role Bindings** section in the IAM tab
+1. Go to the **Role Bindings** section in the Identity & Access Management tab
 2. Click **Create Role Binding**
 3. Select your service account as the subject
 4. Assign appropriate roles (e.g., `writer` or `profile-writer` for agents that need to send profiling data)
@@ -61,19 +61,25 @@ After creating the service account, you need to grant it appropriate permissions
 
 </BrowserWindow>
 
-For more information about roles and permissions, see the [User Roles documentation](user-roles.mdx).
+For more information about roles and permissions, see the [User Roles documentation](iam.mdx).
 
 ### Step 4: Generate a Token
 
 1. Return to the **Service Accounts** section
-2. Find your service account and click on it to view details
-3. In the **Tokens** section, click **Create Token**
+2. Click on the "Create API Token" button
+3. You can either use an existing service account or create a new one specifically for the agent. If you create a new service account, make sure to assign it the appropriate role bindings as described in Step 3.
 4. Enter a descriptive name for the token
 5. Click **Create Token**
 
 <BrowserWindow>
 
 ![Service Account Tokens section](/img/service-account-tokens.png)
+
+</BrowserWindow>
+
+<BrowserWindow>
+
+![Create Token modal](/img/create-token-modal.png)
 
 </BrowserWindow>
 
