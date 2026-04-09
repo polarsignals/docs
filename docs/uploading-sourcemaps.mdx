@@ -1,0 +1,117 @@
+# Uploading Source Maps
+
+When profiling JavaScript or TypeScript applications, the code running in production is typically transpiled and minified. Source maps provide the mapping from this transformed code back to your original source files, enabling Polar Signals to show human-readable function names and file locations in your profiles.
+
+## Prerequisites
+
+You'll need:
+
+1. A service account token for authentication with `debuginfo.write` permission — see the [Generating Tokens page](/docs/generating-tokens)
+2. Your project ID
+3. A JavaScript/TypeScript application that produces source maps (`.js.map` files) during its build
+
+## Option 1: esbuild Plugin
+
+If you use [esbuild](https://esbuild.github.io/) as your bundler, the plugin handles debug ID injection and source map upload automatically as part of each build.
+
+### Install
+
+```bash
+npm install @polarsignals/sourcemap-esbuild-plugin
+```
+
+### Configure
+
+Add the plugin to your esbuild config:
+
+```js
+import esbuild from "esbuild";
+import { debugIdPlugin } from "@polarsignals/sourcemap-esbuild-plugin";
+
+await esbuild.build({
+  entryPoints: ["src/index.ts"],
+  bundle: true,
+  sourcemap: true,
+  outfile: "dist/index.js",
+  plugins: [
+    debugIdPlugin({
+      projectID: process.env.POLARSIGNALS_PROJECT_ID,
+      token: process.env.POLARSIGNALS_TOKEN,
+    }),
+  ],
+});
+```
+
+## Option 2: CLI
+
+For any other build tool that produces `.js` + `.js.map` files — `tsc`, rollup, webpack, swc, etc. — use the CLI to process and upload the source maps after the build step.
+
+### Install
+
+```bash
+npm install @polarsignals/sourcemap-cli
+```
+
+### Upload
+
+Run after your build:
+
+```bash
+tsc --project tsconfig.json
+
+sourcemap-upload dist \
+  --project-id $POLARSIGNALS_PROJECT_ID \
+  --token $POLARSIGNALS_TOKEN \
+  --verbose
+```
+
+Or use it via `npx` without installing:
+
+```bash
+npx @polarsignals/sourcemap-cli dist \
+  --project-id $POLARSIGNALS_PROJECT_ID \
+  --token $POLARSIGNALS_TOKEN
+```
+
+Full CLI options:
+
+```
+sourcemap-upload [options] <directory>
+
+Required:
+  <directory>                Build output directory containing .js + .js.map files
+  --project-id <id>         Polar Signals project ID
+  --token <token>           Authentication token
+
+Optional:
+  --server-url <url>        Server URL (default: grpc.polarsignals.com:443)
+  --verbose                 Enable verbose logging
+  --dry-run                 Inject debug IDs but skip upload
+  --insecure                Skip TLS verification
+  --include <glob>          Glob pattern for JS files (default: **/*.js)
+  --exclude <glob>          Glob pattern to exclude (default: **/node_modules/**)
+```
+
+## Environment Variables
+
+Both the esbuild plugin and CLI support these environment variables:
+
+| Variable                  | Description                                       |
+| ------------------------- | ------------------------------------------------- |
+| `POLARSIGNALS_PROJECT_ID` | Your Polar Signals project ID                     |
+| `POLARSIGNALS_TOKEN`      | Service account authentication token              |
+| `POLARSIGNALS_SERVER_URL` | Server URL (default: `grpc.polarsignals.com:443`) |
+
+## How It Works
+
+1. During the build, each `.js` + `.js.map` pair gets a deterministic **debug ID** — a UUID derived from the source map content
+2. The debug ID is injected into both the JavaScript file and the source map
+3. The source map is uploaded to Polar Signals
+4. At runtime, the Parca Agent reads the debug ID from the JavaScript file loaded in the V8 engine
+5. When you query profiles, Polar Signals uses the debug ID to look up the source map and resolve minified names back to original function names and file locations
+
+Because the debug ID is deterministic, rebuilding the same code will produce the same ID and the upload will be skipped automatically.
+
+:::note
+Need help with a specific build tool or setup? Reach out on the [Polar Signals Discord](https://discord.gg/knw3u5X9bs).
+:::
