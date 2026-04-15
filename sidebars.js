@@ -103,6 +103,7 @@ const sidebars = {
         "invite-users",
         "generating-tokens",
         "uploading-debuginfos",
+        "uploading-sourcemaps",
         "troubleshooting-agent",
         "upload-source",
         "install-parca-debuginfo",
