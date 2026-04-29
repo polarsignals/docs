@@ -18,7 +18,7 @@ Most of the maintainers of the Parca open source project are Polar Signals emplo
 
 A few key feature differentiators on top of support:
 
-* **Scalability:** Parca only scales as far as the biggest machine you can put it on, Polar Signals Cloud is backed by a distributed columnar database based on [FrostDB](https://github.com/polarsignals/frostdb).
+* **Scalability:** Parca only scales as far as the biggest machine you can put it on, Polar Signals Cloud is backed by a distributed columnar database built in Rust on top of [DataFusion](https://datafusion.apache.org/) and [Vortex](https://vortex.dev/).
 * **Symbolization:** In order to support whole system profiling, where every single process is profiled, Polar Signals Cloud implements a scalable symbolizer, which can symbolize upward of 1 million addresses per second per CPU core (standard tooling such as `addr2line` does ~1000).
 * **Multi-tenancy:** Data is organized in organizations and projects. This separation is physical and can be done to the point where two tenants don't share any infrastructure. This can be used to reflect organizational access patterns or security restrictions.
 
@@ -48,7 +48,7 @@ There are a couple of key features that make the above use cases possible and Po
 
 ### Zero Instrumentation & Wide Language Support
 
-Getting started with Polar Signals Cloud is incredibly easy, thanks to our zero instrumentation profiler. No libraries needed, the agent automatically start profiling every process, regardless of the language.
+Getting started with Polar Signals Cloud is incredibly easy, thanks to our zero instrumentation profiler. No libraries needed, the agent automatically starts profiling every process, regardless of the language.
 
 We've put incredible amounts of work to build this state-of-the-art profiler using [novel techniques](https://www.polarsignals.com/blog/posts/2022/11/29/profiling-without-frame-pointers/) that make it faster and more secure than previously known profilers!
 
@@ -62,7 +62,7 @@ All code that runs in customer environments is 100% open source under the Apache
 
 ### Prometheus-like Query Language
 
-Slice-and-dice continuous profiling data using the selector-based language you are already know and love from Prometheus. Add arbitrary dimensions to your data to make it reflect your organization, the tool will not force your organization to change.
+Slice-and-dice continuous profiling data using the selector-based language you already know and love from Prometheus. Add arbitrary dimensions to your data to make it reflect your organization, the tool will not force your organization to change.
 
 ### Global View
 
@@ -70,7 +70,7 @@ Polar Signals Cloud allows you to view all profiling data across your entire inf
 
 ### Filter by function
 
-You already know what you want to optimize? Great! Use the filter-by-function functionality, and you have the profiling data to inform your development process available immediately. No manual profiling, or recerating of past scenarios, the data is already there!
+You already know what you want to optimize? Great! Use the filter-by-function functionality, and you have the profiling data to inform your development process available immediately. No manual profiling, or recreating of past scenarios, the data is already there!
 
 ### Compare
 
