@@ -116,6 +116,16 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Bring Your Own Cloud",
+      items: [
+        "byoc/overview",
+        "byoc/gcp",
+        "byoc/generic",
+        "byoc/colima",
+      ],
+    },
+    {
+      type: "category",
       label: "Migration Guides",
       items: [
         "migrate-agents",
