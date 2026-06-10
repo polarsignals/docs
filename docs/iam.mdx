@@ -8,7 +8,7 @@ The IAM system consists of three main components:
 
 - **Roles**: Collections of permissions that define what actions can be performed
 - **Role Bindings**: Assignments that grant a specific role to a user or service account
-- **Permissions**: Individual capabilities like `profile.read`, `profile.write`, `project.create`, etc.
+- **Permissions**: Individual capabilities like `data.read`, `data.write`, `project.create`, etc.
 
 ## System Roles
 
@@ -33,18 +33,18 @@ The Viewer role has read-only access to the organization. This includes:
 - Listing organization resources
 
 ### Writer
-The Writer role can send profiling data to projects. This includes:
+The Writer role can send observability data to projects. This includes:
 - All permissions from the Viewer role
-- Writing profiling data (`profile.write`)
+- Writing observability data (`data.write`)
 - Writing debug information (`debuginfo.write`)
 
 This role is ideal for service accounts used by profiling agents.
 
 ### Profile Writer
-The Profile Writer role is a specialized role for sending only profiling data:
-- Writing profiling data (`profile.write`)
+The Profile Writer role is a specialized role for sending only observability data:
+- Writing observability data (`data.write`)
 
-This role is ideal for service accounts that only need to send profiles, without any read access.
+This role is ideal for service accounts that only need to send data, without any read access.
 
 ### Debug Info Writer
 The Debug Info Writer role is a specialized role for uploading debug information:
@@ -127,9 +127,9 @@ Organizations can create custom roles with specific sets of permissions tailored
 
 Permissions are organized by resource type:
 
-**Profile Data:**
-- `profile.read` - View profiling data
-- `profile.write` - Send profiling data
+**Observability Data:**
+- `data.read` - View observability data (profiles, logs, traces, and metrics)
+- `data.write` - Send observability data (profiles, logs, traces, and metrics)
 
 **Projects:**
 - `project.read` - View project details

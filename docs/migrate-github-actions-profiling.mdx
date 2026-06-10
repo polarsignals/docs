@@ -43,10 +43,10 @@ The project to send data to is now specified separately via a `projectID` gRPC m
 
 </BrowserWindow>
 
-The **Writer** role grants `profile.write` and `debuginfo.write`. GitHub Actions profiling workflows typically need both since debug information is often only available in CI and needs to be uploaded alongside profiling data.
+The **Writer** role grants `data.write` and `debuginfo.write`. GitHub Actions profiling workflows typically need both since debug information is often only available in CI and needs to be uploaded alongside profiling data.
 
 :::tip
-If you are certain your workflow only sends profiling data and never uploads debuginfos, you can use the **Profile Writer** role instead, which only grants `profile.write`.
+If you are certain your workflow only sends profiling data and never uploads debuginfos, you can use the **Profile Writer** role instead, which only grants `data.write`.
 :::
 
 ### 3. Generate a Token

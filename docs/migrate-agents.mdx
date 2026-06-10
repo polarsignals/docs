@@ -43,10 +43,10 @@ The project to send data to is now specified separately via a `projectID` gRPC m
 
 </BrowserWindow>
 
-The **Writer** role grants `profile.write` and `debuginfo.write`, which is what agents need by default since they upload both profiling data and debug information extracted from running processes.
+The **Writer** role grants `data.write` and `debuginfo.write`, which is what agents need by default since they upload both profiling data and debug information extracted from running processes.
 
 :::tip
-If you have explicitly disabled debuginfo uploads on the agent (via `--debuginfo-upload-disable`), you can use the **Profile Writer** role instead, which only grants `profile.write`.
+If you have explicitly disabled debuginfo uploads on the agent (via `--debuginfo-upload-disable`), you can use the **Profile Writer** role instead, which only grants `data.write`.
 :::
 
 ### 3. Generate a Token
